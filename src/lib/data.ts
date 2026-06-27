@@ -12,7 +12,7 @@ export type SymbolId =
   | "sleep"
   | "absurdity"
   | "ritual";
-export type MediumType = "drawing" | "carving";
+export type MediumType = "drawing" | "carving" | "painting";
 export type Status = "Available" | "Sold" | "Private Collection" | "Inquiry";
 
 export interface Crop {
@@ -265,6 +265,64 @@ const allArtworks: Artwork[] = [
     price: null,
     featured: true,
     face: { label: "Eye", x: 50, y: 38, zoom: 1.8 },
+  },
+  {
+    id: "tree-and-bridge",
+    title: "Tree & Bridge",
+    year: 2024,
+    medium: "Colored pencil on paper",
+    type: "drawing",
+    dimensions: "A4",
+    status: "Available",
+    room: "absurd",
+    symbols: ["absurdity", "ritual"],
+    image: "roiter-tree-and-bridge.jpg",
+    price: null,
+  },
+  {
+    id: "golden-fragment",
+    title: "Golden Fragment",
+    year: 2024,
+    medium: "Oil on canvas",
+    type: "painting",
+    dimensions: "Canvas",
+    status: "Available",
+    room: "face",
+    symbols: ["face", "mask", "body"],
+    image: "roiter-golden-fragment.jpg",
+    price: null,
+    featured: true,
+    face: { label: "Fragment", x: 50, y: 42, zoom: 1.6 },
+  },
+  {
+    id: "tiger",
+    title: "Tiger",
+    year: 2024,
+    medium: "Oil on canvas",
+    type: "painting",
+    dimensions: "Canvas",
+    status: "Available",
+    room: "beast",
+    symbols: ["animal", "face"],
+    image: "roiter-tiger.jpg",
+    price: null,
+    featured: true,
+    face: { label: "Tiger", x: 50, y: 40, zoom: 1.5 },
+  },
+  {
+    id: "blue-bust-bird",
+    title: "Blue Bust & Bird",
+    year: 2024,
+    medium: "Oil on canvas",
+    type: "painting",
+    dimensions: "Canvas",
+    status: "Available",
+    room: "absurd",
+    symbols: ["face", "body", "animal", "absurdity"],
+    image: "roiter-blue-bust-bird.jpg",
+    price: null,
+    featured: true,
+    face: { label: "Blue bust", x: 50, y: 28, zoom: 1.5 },
   },
 ];
 

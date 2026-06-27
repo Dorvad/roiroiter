@@ -10,4 +10,8 @@ roiter-nude-and-vase.jpg
 roiter-octopus-face.jpg
 roiter-bird-gunman.jpg
 roiter-cyclops-carving.jpg
+roiter-tree-and-bridge.jpg
+roiter-golden-fragment.jpg
+roiter-tiger.jpg
+roiter-blue-bust-bird.jpg
 roiter-logo.png

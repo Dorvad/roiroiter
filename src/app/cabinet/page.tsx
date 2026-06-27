@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "The Cabinet",
 };
 
-const toItems = (type: "drawing" | "carving") =>
+const toItems = (type: "drawing" | "carving" | "painting") =>
   artworks
     .filter((a) => a.type === type)
     .map((a) => ({
@@ -31,6 +31,12 @@ const drawers: CabinetDrawerData[] = [
     label: "Carvings",
     note: "Wood & paint",
     items: toItems("carving"),
+  },
+  {
+    id: "paintings",
+    label: "Paintings",
+    note: "Oil on canvas",
+    items: toItems("painting"),
   },
 ];
 
