@@ -1,0 +1,10 @@
+Add your image files here, then run: npm run art:meta
+
+roiter-lady-with-an-ermine.jpg
+roiter-annunciation-in-the-desert.jpg
+roiter-faces.jpg
+roiter-demon-candle.jpg
+roiter-jungle-cat.jpg
+roiter-owl.jpg
+roiter-torso.jpg
+roiter-logo.png

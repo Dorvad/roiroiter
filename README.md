@@ -87,11 +87,15 @@ npm run start    # serve the production build
 npm run lint
 ```
 
-Artwork imagery lives in `public/art` (with blur placeholders + dimensions in
-`src/lib/image-meta.json`); content/data lives in `src/lib/data.ts` and
-`src/lib/content.ts`.
+## Art files
 
-> **Note:** the artwork, prices, biography, and writing are illustrative
-> placeholder content created to demonstrate the design. Inquiry and cart
-> submissions are simulated on the client — no backend or payment provider is
-> wired up yet.
+Drop images into `public/art/` (see `public/art/FILES.txt`), then:
+
+```bash
+npm run art:meta
+git add public/art src/lib/image-meta.json
+git commit -m "Add artwork images"
+git push
+```
+
+GitHub Actions will rebuild the site automatically.

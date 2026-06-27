@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav, menuGroups, site } from "@/lib/site";
 import { CartButton } from "@/components/cart/CartButton";
 import { Logo } from "@/components/Logo";
+import { hasLogoAsset } from "@/lib/data";
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -50,14 +52,19 @@ export function Header() {
       >
         <div className="mx-auto flex max-w-[88rem] items-center justify-between gap-6 px-5 py-4 sm:px-8">
           <Link href="/" className="group flex items-center gap-3" aria-label="Roi Roiter, home">
-            <Logo className="h-8 w-8 text-bone transition-colors duration-500 group-hover:text-gold" />
-            <span className="flex items-baseline gap-2.5">
-              <span className="font-display text-xl tracking-wide text-bone transition-colors duration-500 group-hover:text-gold sm:text-2xl">
-                Roi&nbsp;Roiter
-              </span>
-              <span className="hidden text-[0.6rem] uppercase tracking-[0.3em] text-bone-muted sm:inline">
-                a surreal cabinet
-              </span>
+            {hasLogoAsset() ? (
+              <Image
+                src="/art/roiter-logo.png"
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8 invert transition-opacity group-hover:opacity-80"
+              />
+            ) : (
+              <Logo className="h-8 w-8 text-bone transition-colors duration-500 group-hover:text-gold" />
+            )}
+            <span className="font-display text-xl text-bone transition-colors group-hover:text-gold sm:text-2xl">
+              Roi&nbsp;Roiter
             </span>
           </Link>
 

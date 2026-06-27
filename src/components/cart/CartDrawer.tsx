@@ -83,8 +83,7 @@ export function CartDrawer() {
             ) : lines.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
                 <p className="prose-serif text-base text-bone-muted">
-                  The tray is empty. Editions and small objects you reserve will
-                  rest here until you send word to the studio.
+                  The tray is empty.
                 </p>
               </div>
             ) : (
@@ -158,8 +157,7 @@ export function CartDrawer() {
                     </span>
                   </div>
                   <p className="mt-2 text-xs leading-relaxed text-bone-muted">
-                    Editions and small objects only. Shipping, framing, and any
-                    duties are confirmed by the studio before payment.
+                    Shipping confirmed by the studio before payment.
                   </p>
 
                   {stage === "cart" ? (

@@ -51,11 +51,7 @@ export function RoomCard({
         </h3>
         <p className="mt-2 text-sm text-bone-dim">{room.subtitle}</p>
 
-        <p className="prose-serif mt-3 max-w-sm overflow-hidden text-[0.98rem] leading-relaxed text-bone-muted opacity-0 transition-all duration-700 ease-[var(--ease-museum)] [max-height:0] group-hover:opacity-100 group-hover:[max-height:8rem]">
-          {room.blurb}
-        </p>
-
-        <span className="mt-4 inline-flex items-center gap-2 label label-gold opacity-70 transition-opacity duration-500 group-hover:opacity-100">
+        <span className="mt-4 inline-flex items-center gap-2 label label-gold">
           Enter the room <Arrow className="transition-transform duration-500 group-hover:translate-x-1" />
         </span>
       </div>

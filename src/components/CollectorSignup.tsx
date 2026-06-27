@@ -26,11 +26,9 @@ export function CollectorSignup({
       {variant === "full" && (
         <>
           <div className="label label-gold">The Collector List</div>
-          <p className="prose-serif mt-4 text-lg text-bone-dim">
-            Receive new works, private releases, studio notes, and early access
-            to available pieces. Not a newsletter &mdash; an invitation to a
-            small, private circle.
-          </p>
+        <p className="prose-serif mt-4 text-base text-bone-dim">
+          New works and studio notes. A small private list.
+        </p>
         </>
       )}
       <form
