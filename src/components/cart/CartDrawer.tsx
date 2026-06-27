@@ -14,7 +14,7 @@ export function CartDrawer() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      setStage(lines.length ? "cart" : "cart");
+      setStage("cart");
     } else {
       document.body.style.overflow = "";
     }

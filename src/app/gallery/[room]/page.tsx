@@ -6,7 +6,6 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ArtworkCard } from "@/components/ArtworkCard";
 import { Kicker, Arrow, Hairline, ButtonLink } from "@/components/ui";
 import {
-  rooms,
   roomById,
   artworksByRoom,
   symbolById,
