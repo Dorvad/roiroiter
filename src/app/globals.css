@@ -1,26 +1,467 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   Roi Roiter — a dark surreal cabinet
+   Warm-dark palette, archive textures, restrained motion
+   ============================================================ */
+
+@theme {
+  /* Surfaces — warm blacks and walnut */
+  --color-ink: #0c0a08;
+  --color-ink-deep: #070504;
+  --color-panel: #15110d;
+  --color-panel-2: #1d1712;
+  --color-charcoal: #241d16;
+  --color-walnut: #3b2a1d;
+  --color-walnut-2: #543c28;
+  --color-umber: #6f3a1e;
+
+  /* Ink / bone text */
+  --color-bone: #e9e1d2;
+  --color-bone-dim: #c4baa8;
+  --color-bone-muted: #968c7d;
+
+  /* Accents */
+  --color-dust: #8b9aa1;
+  --color-dust-deep: #5e6d73;
+  --color-red: #9c4032;
+  --color-gold: #c2a15c;
+  --color-gold-deep: #8c6f3c;
+
+  --radius-card: 2px;
+
+  --shadow-relic: 0 40px 80px -40px rgba(0, 0, 0, 0.9),
+    0 8px 24px -12px rgba(0, 0, 0, 0.8);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-serif: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --ease-slow: cubic-bezier(0.16, 0.84, 0.34, 1);
+  --ease-museum: cubic-bezier(0.22, 1, 0.36, 1);
+  --hairline: rgba(196, 186, 168, 0.14);
+  --hairline-gold: rgba(194, 161, 92, 0.28);
+}
+
+/* ----------------------------------------------------------------
+   Base
+   ---------------------------------------------------------------- */
+* {
+  border-color: var(--hairline);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0.005em;
+  overflow-x: hidden;
+}
+
+/* Deep atmospheric ground that sits beneath everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      120% 80% at 50% -10%,
+      rgba(111, 58, 30, 0.16),
+      rgba(12, 10, 8, 0) 55%
+    ),
+    radial-gradient(
+      90% 70% at 85% 110%,
+      rgba(94, 109, 115, 0.08),
+      rgba(12, 10, 8, 0) 60%
+    ),
+    radial-gradient(
+      140% 120% at 50% 50%,
+      rgba(12, 10, 8, 0) 45%,
+      rgba(5, 4, 3, 0.85) 100%
+    );
+  pointer-events: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+::selection {
+  background: rgba(194, 161, 92, 0.26);
+  color: var(--color-bone);
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-walnut);
+  border: 3px solid var(--color-ink-deep);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-walnut-2);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ----------------------------------------------------------------
+   Atmosphere — film grain + vignette overlays
+   ---------------------------------------------------------------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-drift 7s steps(5) infinite;
+}
+
+@keyframes grain-drift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(4%, -5%); }
+  60% { transform: translate(-3%, 6%); }
+  80% { transform: translate(5%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(
+    130% 110% at 50% 42%,
+    rgba(0, 0, 0, 0) 55%,
+    rgba(4, 3, 2, 0.55) 100%
+  );
+}
+
+/* ----------------------------------------------------------------
+   Surfaces & textures
+   ---------------------------------------------------------------- */
+.texture-paper {
+  background-color: var(--color-panel);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.4'/%3E%3C/svg%3E");
+  background-blend-mode: overlay;
+}
+
+.texture-wood {
+  background-color: var(--color-walnut);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.16' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.1 0 0 0 0 0.06 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+}
+
+/* Thin separators */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline) 18%,
+    var(--hairline) 82%,
+    transparent
+  );
+  border: 0;
+}
+.hairline-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline-gold) 50%,
+    transparent
+  );
+  border: 0;
+}
+
+/* ----------------------------------------------------------------
+   Type helpers
+   ---------------------------------------------------------------- */
+.label {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--color-bone-muted);
+}
+
+.label-gold {
+  color: var(--color-gold);
+}
+
+.prose-serif {
+  font-family: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
+  font-size: 1.18rem;
+  line-height: 1.72;
+  color: var(--color-bone-dim);
+}
+.prose-serif p + p {
+  margin-top: 1.1em;
+}
+
+.deco-quote {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Underline that draws on hover, like a drawn line */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-museum);
+  opacity: 0.6;
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* ----------------------------------------------------------------
+   Artwork framing
+   ---------------------------------------------------------------- */
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-ink-deep);
+  border-radius: var(--radius-card);
+}
+/* inner shadow + faint gilt edge to read like a mounted plate */
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 2px rgba(196, 186, 168, 0.06),
+    inset 0 60px 120px -60px rgba(0, 0, 0, 0.9);
+  border-radius: inherit;
+}
+
+.frame img {
+  transition: transform 1.4s var(--ease-museum), filter 1.4s var(--ease-museum);
+}
+
+/* crop + slow zoom on .group hover (zoom amount carried in --z / --zh) */
+.art-zoom {
+  transform: scale(var(--z, 1));
+  transition: transform 1.8s var(--ease-museum), filter 1.8s var(--ease-museum);
+}
+.group:hover .art-zoom {
+  transform: scale(var(--zh, 1.05));
+}
+
+/* ----------------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid var(--hairline-gold);
+  color: var(--color-bone);
+  background: rgba(20, 16, 13, 0.4);
+  border-radius: 1px;
+  transition: background 0.6s var(--ease-museum),
+    border-color 0.6s var(--ease-museum), color 0.6s var(--ease-museum),
+    transform 0.6s var(--ease-museum);
+  cursor: pointer;
+}
+.btn:hover {
+  background: rgba(194, 161, 92, 0.1);
+  border-color: var(--color-gold);
+  color: var(--color-bone);
+}
+.btn-solid {
+  background: var(--color-gold-deep);
+  border-color: var(--color-gold-deep);
+  color: #14100b;
+}
+.btn-solid:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #14100b;
+}
+.btn-ghost {
+  border-color: var(--hairline);
+  background: transparent;
+}
+
+/* ----------------------------------------------------------------
+   Status dots
+   ---------------------------------------------------------------- */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  display: inline-block;
+  flex: none;
+}
+.status-available { background: var(--color-dust); box-shadow: 0 0 8px rgba(139,154,161,0.6);}
+.status-sold { background: var(--color-red); }
+.status-private { background: var(--color-gold); }
+.status-inquiry { background: var(--color-bone-muted); }
+
+/* ----------------------------------------------------------------
+   Magnifier cursor (drawn by MagnifierCursor.tsx)
+   ---------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
+  [data-magnify] {
+    cursor: none;
+  }
+}
+
+.magnifier {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 999px;
+  border: 1px solid rgba(196, 186, 168, 0.5);
+  mix-blend-mode: difference;
+  transition: width 0.45s var(--ease-museum), height 0.45s var(--ease-museum),
+    margin 0.45s var(--ease-museum), opacity 0.45s var(--ease-museum),
+    border-color 0.45s var(--ease-museum);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.magnifier::before,
+.magnifier::after {
+  content: "";
+  position: absolute;
+  background: rgba(233, 225, 210, 0.8);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-museum);
+}
+.magnifier::before { width: 11px; height: 1px; }
+.magnifier::after { width: 1px; height: 11px; }
+.magnifier[data-active="true"] {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+  border-color: rgba(194, 161, 92, 0.7);
+  mix-blend-mode: normal;
+  background: rgba(12, 10, 8, 0.04);
+  backdrop-filter: blur(0.5px);
+}
+.magnifier[data-active="true"]::before,
+.magnifier[data-active="true"]::after {
+  opacity: 0.85;
+}
+
+/* ----------------------------------------------------------------
+   Reveal-from-darkness (used by Reveal.tsx fallback / no-JS)
+   ---------------------------------------------------------------- */
+@keyframes emerge {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.drawer-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.7s var(--ease-museum);
+}
+.drawer-body > div {
+  overflow: hidden;
+}
+.drawer-open .drawer-body {
+  grid-template-rows: 1fr;
+}
+
+/* ----------------------------------------------------------------
+   Utilities
+   ---------------------------------------------------------------- */
+.edge-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+  mask-image: linear-gradient(to bottom, black 70%, transparent);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* ----------------------------------------------------------------
+   Reduced motion
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .grain {
+    animation: none;
+  }
 }
