@@ -1,15 +1,12 @@
 export const about = {
   portrait: "roiter-faces.jpg",
-  intro: "Roi Roiter paints and draws surreal figures — faces, beasts, bodies, and scenes remade from memory and old masters.",
+  intro: "Roi Roiter paints and draws surreal figures.",
   biography: [
-    "Painter and draftsman working between oil painting and the sketchbook. Classical sources are dismantled and rebuilt with masks, animals, and strange anatomy.",
+    "Oil painting and ink drawings in the sketchbook — faces, beasts, and fragmented bodies.",
   ],
-  statement: [
-    "I am interested in the face as a mask, the body as a fragment, and the animal as a witness.",
-  ],
+  statement: [] as string[],
   materials: [
-    { title: "Paint", text: "Oil on canvas." },
-    { title: "Drawings", text: "Ink and marker in sketchbooks." },
+    { title: "Drawings", text: "Ink and marker on paper." },
   ],
   exhibitions: [] as { year: string; text: string }[],
 };

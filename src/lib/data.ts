@@ -12,7 +12,7 @@ export type SymbolId =
   | "sleep"
   | "absurdity"
   | "ritual";
-export type MediumType = "painting" | "drawing";
+export type MediumType = "drawing";
 export type Status = "Available" | "Sold" | "Private Collection" | "Inquiry";
 
 export interface Crop {
@@ -33,8 +33,6 @@ export interface Artwork {
   room: RoomId;
   symbols: SymbolId[];
   image: string;
-  poetic?: string;
-  note?: string;
   price?: number | null;
   details?: Crop[];
   face?: Crop;
@@ -71,7 +69,7 @@ export const rooms: Room[] = [
     id: "face",
     name: "The Face Room",
     href: "/gallery/face",
-    subtitle: "Faces & masks",
+    subtitle: "Faces",
     image: "roiter-faces.jpg",
     focus: { x: 50, y: 45, zoom: 1.1 },
   },
@@ -79,7 +77,7 @@ export const rooms: Room[] = [
     id: "body",
     name: "The Body Room",
     href: "/gallery/body",
-    subtitle: "Bodies & fragments",
+    subtitle: "Bodies",
     image: "roiter-torso.jpg",
     focus: { x: 50, y: 42, zoom: 1.15 },
   },
@@ -95,9 +93,9 @@ export const rooms: Room[] = [
     id: "absurd",
     name: "The Absurd Room",
     href: "/gallery/absurd",
-    subtitle: "Strange scale & scenes",
-    image: "roiter-annunciation-in-the-desert.jpg",
-    focus: { x: 50, y: 35, zoom: 1.1 },
+    subtitle: "Strange scenes",
+    image: "roiter-demon-candle.jpg",
+    focus: { x: 50, y: 38, zoom: 1.15 },
   },
 ];
 
@@ -121,49 +119,8 @@ export const symbols: Symbol[] = [
 
 export const symbolById = (id: SymbolId) => symbols.find((s) => s.id === id)!;
 
-/** Real works only — drop matching files into public/art/ then run npm run art:meta */
+/** Real works only — add matching files to public/art/ then run npm run art:meta */
 const allArtworks: Artwork[] = [
-  {
-    id: "lady-with-an-ermine",
-    title: "Lady with an Ermine (after Leonardo)",
-    year: 2023,
-    medium: "Oil on canvas",
-    type: "painting",
-    dimensions: "100 × 70 cm",
-    status: "Available",
-    room: "face",
-    symbols: ["face", "mask", "animal"],
-    image: "roiter-lady-with-an-ermine.jpg",
-    poetic: "Leonardo’s lady, a death mask, and a small beast with the artist’s face.",
-    price: null,
-    featured: true,
-    hero: true,
-    face: { label: "The Lady", x: 50, y: 28, zoom: 1.5 },
-    details: [
-      { label: "Death mask", x: 50, y: 28, zoom: 2.0 },
-      { label: "The ermine", x: 50, y: 62, zoom: 2.2 },
-    ],
-  },
-  {
-    id: "annunciation-in-the-desert",
-    title: "Annunciation in the Desert",
-    year: 2024,
-    medium: "Oil on canvas",
-    type: "painting",
-    dimensions: "150 × 100 cm",
-    status: "Available",
-    room: "absurd",
-    symbols: ["absurdity", "animal", "hand", "body", "desert", "machine", "sleep"],
-    image: "roiter-annunciation-in-the-desert.jpg",
-    poetic: "A giant arm, a black beast, a sleeper, a salesman with a dead machine.",
-    price: null,
-    featured: true,
-    face: { label: "Sleeper", x: 22, y: 82, zoom: 2.0 },
-    details: [
-      { label: "The arm", x: 33, y: 46, zoom: 1.8 },
-      { label: "The beast", x: 56, y: 12, zoom: 2.0 },
-    ],
-  },
   {
     id: "faces",
     title: "Faces",
@@ -175,9 +132,9 @@ const allArtworks: Artwork[] = [
     room: "face",
     symbols: ["face", "mask"],
     image: "roiter-faces.jpg",
-    poetic: "A page of heads, crowded and watching.",
     price: null,
     featured: true,
+    hero: true,
     face: { label: "Pink head", x: 50, y: 32, zoom: 1.6 },
   },
   {
@@ -188,10 +145,11 @@ const allArtworks: Artwork[] = [
     type: "drawing",
     dimensions: "A4 sketchbook",
     status: "Available",
-    room: "face",
-    symbols: ["face", "mask", "ritual"],
+    room: "absurd",
+    symbols: ["face", "mask", "ritual", "absurdity"],
     image: "roiter-demon-candle.jpg",
     price: null,
+    featured: true,
     face: { label: "Demon", x: 50, y: 38, zoom: 1.5 },
   },
   {
@@ -206,6 +164,7 @@ const allArtworks: Artwork[] = [
     symbols: ["animal"],
     image: "roiter-jungle-cat.jpg",
     price: null,
+    featured: true,
     face: { label: "Cat", x: 50, y: 40, zoom: 1.6 },
   },
   {
@@ -241,7 +200,6 @@ export const artworks: Artwork[] = allArtworks.filter((a) =>
   hasImageAsset(a.image),
 );
 
-/** All catalog ids — used to prerender routes before images are uploaded */
 export const catalogArtworkIds = () => allArtworks.map((a) => a.id);
 
 export const artworkById = (id: string) => artworks.find((a) => a.id === id);
@@ -258,8 +216,7 @@ export const availableArtworks = () =>
 export const faces = () =>
   artworks.filter((a) => a.face) as (Artwork & { face: Crop })[];
 
-export const featuredArtworks = () =>
-  artworks.filter((a) => a.featured);
+export const featuredArtworks = () => artworks.filter((a) => a.featured);
 
 export const heroArtwork = () =>
   artworks.find((a) => a.hero) ?? artworks[0] ?? null;

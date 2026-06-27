@@ -1,9 +1,8 @@
 export const site = {
   name: "Roi Roiter",
   tagline: "Paintings & drawings",
-  heroLine: "Faces, beasts, bodies, and painted dreams.",
-  manifesto:
-    "Surreal paintings and drawings — classical sources remade, sketchbook faces, animals, and strange bodies.",
+  heroLine: "Faces, beasts, and bodies.",
+  manifesto: "Surreal paintings and drawings.",
   email: "studio@roiroiter.art",
   location: "Studio visits by appointment",
   instagram: "roiroiter",

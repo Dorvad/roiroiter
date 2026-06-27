@@ -6,7 +6,7 @@ import { Art } from "@/components/Art";
 import { ArtworkViewer } from "@/components/ArtworkViewer";
 import { InquiryForm } from "@/components/InquiryForm";
 import { ArtworkCard } from "@/components/ArtworkCard";
-import { Kicker, StatusBadge, Arrow } from "@/components/ui";
+import { Kicker, StatusBadge } from "@/components/ui";
 import {
   catalogArtworkIds,
   artworkById,
@@ -77,9 +77,6 @@ export default async function ArtworkPage({
               <span>{art.year}</span>
               <StatusBadge status={art.status} />
             </div>
-            {art.poetic && (
-              <p className="prose-serif mt-4 text-lg text-bone-dim">{art.poetic}</p>
-            )}
             <dl className="mt-6 space-y-2 border-t border-[var(--hairline)] pt-5 text-sm">
               <Row label="Medium" value={art.medium} />
               <Row label="Size" value={art.dimensions} />

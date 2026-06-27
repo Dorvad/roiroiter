@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run art:meta && next build",
     "start": "next start",
     "lint": "eslint",
     "art:meta": "node scripts/build-image-meta.mjs"

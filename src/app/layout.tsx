@@ -34,25 +34,17 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Roi Roiter — A Surreal Cabinet of Faces, Bodies & Carved Objects",
+    default: "Roi Roiter",
     template: "%s — Roi Roiter",
   },
   description: site.manifesto,
-  keywords: [
-    "Roi Roiter",
-    "surreal painting",
-    "wood carving",
-    "contemporary art",
-    "dark surrealism",
-    "art for sale",
-    "private collection",
-  ],
+  keywords: ["Roi Roiter", "surreal painting", "contemporary art"],
   openGraph: {
-    title: "Roi Roiter — A Surreal Cabinet",
+    title: "Roi Roiter",
     description: site.heroLine,
     type: "website",
     url: site.url,
-    images: [{ url: "/art/hero-face.jpg", width: 1536, height: 1024 }],
+    images: [{ url: "/art/roiter-faces.jpg", width: 1200, height: 1600 }],
   },
   twitter: { card: "summary_large_image" },
 };

@@ -14,8 +14,8 @@ export function CollectorSignup({
     return (
       <div className={variant === "full" ? "max-w-xl" : ""}>
         <p className="deco-quote text-2xl text-bone">You are on the list.</p>
-        <p className="prose-serif mt-3 text-base">
-          A quiet note will reach you before the work reaches anyone else.
+        <p className="prose-serif mt-3 text-base text-bone-dim">
+          Thank you.
         </p>
       </div>
     );
@@ -27,7 +27,7 @@ export function CollectorSignup({
         <>
           <div className="label label-gold">The Collector List</div>
         <p className="prose-serif mt-4 text-base text-bone-dim">
-          New works and studio notes. A small private list.
+          New works by email.
         </p>
         </>
       )}

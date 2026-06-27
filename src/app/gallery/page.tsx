@@ -18,7 +18,7 @@ export default function GalleryPage() {
 
       <Container className="mt-16">
         {list.length === 0 ? (
-          <p className="text-bone-muted">Works appear here once image files are added to the repository.</p>
+          <p className="text-bone-muted">Add artwork files to public/art/</p>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2">
             {list.map((room, i) => (

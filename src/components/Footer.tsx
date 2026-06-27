@@ -49,8 +49,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="prose-serif mt-4 max-w-md text-base text-bone-muted">
-              {site.tagline}. A private museum of painted dreams and carved
-              faces, kept by one person, at night.
+              {site.tagline}
             </p>
           </div>
           <div className="space-y-1.5 text-sm text-bone-muted sm:text-right">

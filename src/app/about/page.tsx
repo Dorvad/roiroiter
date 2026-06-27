@@ -23,9 +23,6 @@ export default function AboutPage() {
             {about.biography.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
-            {about.statement.map((p, i) => (
-              <p key={i} className="font-display text-xl text-bone">{p}</p>
-            ))}
           </div>
           <ButtonLink href="/contact" className="mt-8">
             Contact
