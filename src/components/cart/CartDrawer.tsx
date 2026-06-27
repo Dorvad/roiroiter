@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice, getImageMeta } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 
 export function CartDrawer() {
   const { isOpen, close, lines, total, remove, setQty, clear } = useCart();
@@ -95,7 +96,7 @@ export function CartDrawer() {
                       <div key={l.key} className="flex gap-4">
                         <div className="frame relative h-20 w-20 shrink-0">
                           <Image
-                            src={`/art/${l.image}`}
+                            src={artSrc(l.image)}
                             alt={l.title}
                             fill
                             sizes="80px"

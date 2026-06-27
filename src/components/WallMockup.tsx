@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { getImageMeta } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 
 // Visible wall scene, in centimetres
 const SCENE_H = 250;
@@ -79,7 +80,7 @@ export function WallMockup({
                 }}
               >
                 <Image
-                  src={`/art/${image}`}
+                  src={artSrc(image)}
                   alt={alt}
                   fill
                   sizes="40vw"

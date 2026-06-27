@@ -10,6 +10,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 import { getImageMeta } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 import { site } from "@/lib/site";
 import { Container } from "@/components/Page";
 import { Arrow } from "@/components/ui";
@@ -55,7 +56,7 @@ export function Hero({
             transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <Image
-              src={`/art/${image}`}
+              src={artSrc(image)}
               alt={alt ?? "Roi Roiter"}
               fill
               priority

@@ -9,6 +9,7 @@ import { primaryNav, menuGroups, site } from "@/lib/site";
 import { CartButton } from "@/components/cart/CartButton";
 import { Logo } from "@/components/Logo";
 import { hasLogoAsset } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -54,7 +55,7 @@ export function Header() {
           <Link href="/" className="group flex items-center gap-3" aria-label="Roi Roiter, home">
             {hasLogoAsset() ? (
               <Image
-                src="/art/roiter-logo.png"
+                src={artSrc("roiter-logo.png")}
                 alt=""
                 width={32}
                 height={32}

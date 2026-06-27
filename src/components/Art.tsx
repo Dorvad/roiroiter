@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { getImageMeta } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 
 type Crop = { x: number; y: number; zoom: number };
 
@@ -79,7 +80,7 @@ export function Art({
       style={{ aspectRatio: aspect }}
     >
       <Image
-        src={`/art/${image}`}
+        src={artSrc(image)}
         alt={alt}
         fill
         sizes={sizes}

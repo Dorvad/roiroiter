@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getImageMeta, type Artwork, type Crop } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 
 export function FaceTile({
   art,
@@ -10,7 +11,7 @@ export function FaceTile({
   sizes?: string;
 }) {
   const meta = getImageMeta(art.image);
-  const src = `/art/${art.image}`;
+  const src = artSrc(art.image);
 
   return (
     <Link

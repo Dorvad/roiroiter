@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { getImageMeta } from "@/lib/data";
+import { artSrc } from "@/lib/paths";
 
 export function ArtworkViewer({
   image,
@@ -51,7 +52,7 @@ export function ArtworkViewer({
     };
   }, [open]);
 
-  const src = `/art/${image}`;
+  const src = artSrc(image);
 
   return (
     <>
