@@ -2,6 +2,7 @@ import Link from "next/link";
 import { menuGroups, site } from "@/lib/site";
 import { CollectorSignup } from "@/components/CollectorSignup";
 import { Hairline } from "@/components/ui";
+import { Logo } from "@/components/Logo";
 
 export function Footer() {
   return (
@@ -37,10 +38,17 @@ export function Footer() {
 
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <Link href="/" className="font-display text-3xl text-bone">
-              Roi Roiter
+            <Link
+              href="/"
+              className="group inline-flex items-center gap-3"
+              aria-label="Roi Roiter, home"
+            >
+              <Logo className="h-9 w-9 text-bone transition-colors duration-500 group-hover:text-gold" />
+              <span className="font-display text-3xl text-bone transition-colors duration-500 group-hover:text-gold">
+                Roi Roiter
+              </span>
             </Link>
-            <p className="prose-serif mt-3 max-w-md text-base text-bone-muted">
+            <p className="prose-serif mt-4 max-w-md text-base text-bone-muted">
               {site.tagline}. A private museum of painted dreams and carved
               faces, kept by one person, at night.
             </p>
