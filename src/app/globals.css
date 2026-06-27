@@ -413,11 +413,21 @@ a {
 }
 
 /* ----------------------------------------------------------------
-   Reveal-from-darkness (used by Reveal.tsx fallback / no-JS)
+   Reveal-from-darkness
    ---------------------------------------------------------------- */
-@keyframes emerge {
-  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 20px));
+  filter: blur(10px);
+  transition: opacity 1.1s var(--ease-museum),
+    transform 1.1s var(--ease-museum), filter 1.1s var(--ease-museum);
+  will-change: opacity, transform;
+}
+.reveal.is-shown {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  will-change: auto;
 }
 
 .drawer-body {
@@ -463,5 +473,10 @@ a {
   }
   .grain {
     animation: none;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }

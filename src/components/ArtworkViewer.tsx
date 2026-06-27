@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { getImageMeta } from "@/lib/data";
@@ -24,7 +25,10 @@ export function ArtworkViewer({
   const [pos, setPos] = useState({ x: 50, y: 50 });
   const [hover, setHover] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => setMounted(true), []);
 
   function onMove(e: MouseEvent<HTMLButtonElement>) {
     const r = ref.current?.getBoundingClientRect();
@@ -82,8 +86,10 @@ export function ArtworkViewer({
         </span>
       </button>
 
-      <AnimatePresence>
-        {open && (
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
           <motion.div
             className="fixed inset-0 z-[90] flex items-center justify-center bg-ink-deep/96 p-4 sm:p-10"
             initial={{ opacity: 0 }}
@@ -123,8 +129,10 @@ export function ArtworkViewer({
               </div>
             )}
           </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </>
   );
 }

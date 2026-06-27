@@ -1,38 +1,70 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export function Reveal({
   children,
   delay = 0,
   y = 20,
-  blur = true,
-  duration = 1.15,
-  className,
+  className = "",
 }: {
   children: ReactNode;
   delay?: number;
   y?: number;
+  /** kept for API compatibility */
   blur?: boolean;
   duration?: number;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
 
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduce || typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShown(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
+    );
+    io.observe(el);
+
+    // Safety: never leave content hidden, even if the observer misbehaves.
+    const fallback = window.setTimeout(() => setShown(true), 1300);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y, filter: blur ? "blur(10px)" : "blur(0px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      ref={ref}
+      className={`reveal ${shown ? "is-shown" : ""} ${className}`}
+      style={{
+        transitionDelay: `${delay}s`,
+        ["--reveal-y" as string]: `${y}px`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
