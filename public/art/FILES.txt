@@ -5,4 +5,9 @@ roiter-demon-candle.jpg
 roiter-jungle-cat.jpg
 roiter-owl.jpg
 roiter-torso.jpg
+roiter-three-figures.jpg
+roiter-nude-and-vase.jpg
+roiter-octopus-face.jpg
+roiter-bird-gunman.jpg
+roiter-cyclops-carving.jpg
 roiter-logo.png

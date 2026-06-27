@@ -12,7 +12,7 @@ export type SymbolId =
   | "sleep"
   | "absurdity"
   | "ritual";
-export type MediumType = "drawing";
+export type MediumType = "drawing" | "carving";
 export type Status = "Available" | "Sold" | "Private Collection" | "Inquiry";
 
 export interface Crop {
@@ -193,6 +193,78 @@ const allArtworks: Artwork[] = [
     symbols: ["body"],
     image: "roiter-torso.jpg",
     price: null,
+  },
+  {
+    id: "three-figures",
+    title: "Three Figures",
+    year: 2024,
+    medium: "Ink on paper",
+    type: "drawing",
+    dimensions: "A4 sketchbook",
+    status: "Available",
+    room: "absurd",
+    symbols: ["body", "absurdity"],
+    image: "roiter-three-figures.jpg",
+    price: null,
+    face: { label: "Center figure", x: 50, y: 45, zoom: 1.5 },
+  },
+  {
+    id: "nude-and-vase",
+    title: "Nude & Vase",
+    year: 2024,
+    medium: "Ink on paper",
+    type: "drawing",
+    dimensions: "A4 sketchbook",
+    status: "Available",
+    room: "body",
+    symbols: ["body", "ritual"],
+    image: "roiter-nude-and-vase.jpg",
+    price: null,
+    face: { label: "Figure", x: 35, y: 40, zoom: 1.5 },
+  },
+  {
+    id: "octopus-face",
+    title: "Octopus Face",
+    year: 2024,
+    medium: "Ink on paper",
+    type: "drawing",
+    dimensions: "A4 sketchbook",
+    status: "Available",
+    room: "face",
+    symbols: ["face", "animal", "absurdity"],
+    image: "roiter-octopus-face.jpg",
+    price: null,
+    featured: true,
+    face: { label: "Face", x: 50, y: 35, zoom: 1.5 },
+  },
+  {
+    id: "bird-gunman",
+    title: "Bird & Gun",
+    year: 2024,
+    medium: "Ink on paper",
+    type: "drawing",
+    dimensions: "A4 sketchbook",
+    status: "Available",
+    room: "face",
+    symbols: ["face", "mask", "animal"],
+    image: "roiter-bird-gunman.jpg",
+    price: null,
+    face: { label: "Mask", x: 50, y: 28, zoom: 1.6 },
+  },
+  {
+    id: "cyclops-carving",
+    title: "Cyclops",
+    year: 2024,
+    medium: "Carved wood & paint",
+    type: "carving",
+    dimensions: "Sculpture",
+    status: "Available",
+    room: "face",
+    symbols: ["face", "mask", "ritual"],
+    image: "roiter-cyclops-carving.jpg",
+    price: null,
+    featured: true,
+    face: { label: "Eye", x: 50, y: 38, zoom: 1.8 },
   },
 ];
 
