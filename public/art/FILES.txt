@@ -1,5 +1,3 @@
-Add your image files here, then run: npm run art:meta
-
 roiter-faces.jpg
 roiter-demon-candle.jpg
 roiter-jungle-cat.jpg
@@ -11,6 +9,7 @@ roiter-octopus-face.jpg
 roiter-bird-gunman.jpg
 roiter-cyclops-carving.jpg
 roiter-tree-and-bridge.jpg
+roiter-heraldic-tree.jpg
 roiter-golden-fragment.jpg
 roiter-tiger.jpg
 roiter-blue-bust-bird.jpg
