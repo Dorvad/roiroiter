@@ -107,7 +107,7 @@ export const about = {
     "Roi Roiter is a painter and woodcarver working from a single dim studio at the edge of the city. His work stages impossible encounters between faces, bodies, beasts, machines, wounds, and memory.",
   biography: [
     "Roi Roiter (b. 1984) makes paintings and carved objects that read like fragments recovered from a private mythology. Trained first as a restorer of old panels, he learned his palette from the things he was asked to repair \u2014 the burnt umbers and tarnished golds of pictures that had survived longer than their makers.",
-    "He left restoration to make his own ruins. Since then he has worked almost entirely from the studio, in series: rooms of faces, of bodies, of beasts, of small ceremonies. Between paintings he carves \u2014 heads, masks, reluctant figures, boxes for safekeeping \u2014 the way other people keep a journal.",
+    "He left restoration to make his own ruins. He still returns, now and then, to the old masters \u2014 repainting a Leonardo or a forgotten icon until it admits the skull beneath its composure. Since then he has worked almost entirely from the studio, in series: rooms of faces, of bodies, of beasts, of small ceremonies. Between paintings he carves \u2014 heads, masks, reluctant figures, boxes for safekeeping \u2014 the way other people keep a journal.",
     "His work has been shown quietly, in the way he prefers: a handful of rooms, a small circle of collectors, and the long correspondence that grows between an artist and the people who live with the work.",
   ],
   statement: [

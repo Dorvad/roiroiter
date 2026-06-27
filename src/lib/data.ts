@@ -77,11 +77,15 @@ export interface ImageMeta {
 
 const imageMeta = meta as Record<string, ImageMeta>;
 
+/** strip the file extension to match the keys in image-meta.json */
+const metaKey = (image: string) => image.replace(/\.[^/.]+$/, "");
+
 export function getImageMeta(image: string): ImageMeta {
-  return (
-    imageMeta[image] ?? { w: 1536, h: 1024, blur: "" }
-  );
+  return imageMeta[metaKey(image)] ?? { w: 1536, h: 1024, blur: "" };
 }
+
+/** whether an artwork's image asset has been processed into image-meta.json */
+export const hasImageAsset = (image: string) => metaKey(image) in imageMeta;
 
 /* ------------------------------------------------------------------ */
 /* Rooms                                                              */
@@ -195,7 +199,7 @@ export const symbolById = (id: SymbolId) => symbols.find((s) => s.id === id)!;
 /* Artworks                                                           */
 /* ------------------------------------------------------------------ */
 
-export const artworks: Artwork[] = [
+const allArtworks: Artwork[] = [
   /* ---- THE FACE ROOM ---- */
   {
     id: "the-oracle-of-quiet-hours",
@@ -683,7 +687,67 @@ export const artworks: Artwork[] = [
     ],
     face: { label: "Reliquary Lid", x: 50, y: 38, zoom: 1.6 },
   },
+
+  /* ---- REAL WORKS (assets supplied by the artist) ---- */
+  {
+    id: "lady-with-an-ermine-after-leonardo",
+    title: "Lady with an Ermine (after Leonardo)",
+    year: 2023,
+    medium: "Oil on canvas",
+    type: "painting",
+    dimensions: "100 \u00d7 70 cm",
+    status: "Available",
+    room: "face",
+    symbols: ["face", "mask", "death", "ritual", "animal", "body"],
+    image: "roiter-lady-with-an-ermine.jpg",
+    poetic:
+      "Leonardo\u2019s lady returns wearing a painted death\u2019s-head, cradling not an ermine but a small beast that has grown the artist\u2019s own face.",
+    note:
+      "I keep returning to the old masters the way one returns to a recurring dream \u2014 to repaint the parts that frighten me. Here the Lady keeps her composure while her face admits the skull beneath, and the creature in her arms looks out with my own eyes. It is a portrait of being held, and of being the thing that is held.",
+    price: null,
+    featured: true,
+    details: [
+      { label: "The death mask", x: 50, y: 24, zoom: 2.2 },
+      { label: "The creature\u2019s face", x: 50, y: 62, zoom: 2.4 },
+      { label: "The black beads", x: 52, y: 46, zoom: 2.2 },
+    ],
+    face: { label: "The Lady", x: 50, y: 25, zoom: 1.7 },
+  },
+  {
+    id: "annunciation-in-the-desert",
+    title: "Annunciation in the Desert",
+    year: 2024,
+    medium: "Oil on canvas",
+    type: "painting",
+    dimensions: "150 \u00d7 100 cm",
+    status: "Available",
+    room: "absurd",
+    symbols: ["absurdity", "animal", "hand", "body", "desert", "sleep", "machine", "face"],
+    image: "roiter-annunciation-in-the-desert.jpg",
+    poetic:
+      "A giant arm reaches across a desert sky, a black beast tearing at the faces along it, while far below a sleeping head dreams and a tiny salesman offers an obsolete machine.",
+    note:
+      "Every annunciation is an interruption \u2014 a vast gesture arriving from somewhere off-canvas to tell a sleeper that their life is about to change. I gave the messenger a beast and a wound, and put the sleeper face-down in the sand. The small man with his dead computer is the part of me that keeps trying to close the sale while the miracle happens overhead.",
+    price: null,
+    featured: true,
+    details: [
+      { label: "The reaching hand", x: 33, y: 46, zoom: 2.0 },
+      { label: "The beast", x: 56, y: 12, zoom: 2.2 },
+      { label: "The sleeper", x: 24, y: 84, zoom: 2.2 },
+      { label: "The salesman", x: 72, y: 84, zoom: 3.0 },
+    ],
+    face: { label: "The Sleeper", x: 24, y: 83, zoom: 1.9 },
+  },
 ];
+
+/**
+ * Only works whose image asset exists in `image-meta.json` are surfaced. Real
+ * works added by the artist activate automatically once their file is dropped
+ * into `public/art/` and `npm run art:meta` is run.
+ */
+export const artworks: Artwork[] = allArtworks.filter((a) =>
+  hasImageAsset(a.image),
+);
 
 /* ------------------------------------------------------------------ */
 /* Selectors                                                          */

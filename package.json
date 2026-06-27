@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "art:meta": "node scripts/build-image-meta.mjs"
   },
   "dependencies": {
     "motion": "^12.42.0",
