@@ -40,7 +40,42 @@ magnifier cursor, and slow, restrained motion.
 - [Tailwind CSS v4](https://tailwindcss.com)
 - [`motion`](https://motion.dev) for restrained animation
 
-All routes are statically prerendered.
+All routes are statically prerendered and exported as plain HTML/CSS/JS for hosting.
+
+## Deploy
+
+### GitHub Pages (this repo)
+
+GitHub Pages **cannot run Next.js**. If you set Pages to “Deploy from branch” and
+point it at `main`, GitHub only publishes files from the repo — so you see
+**README.md on a white page**, not the site.
+
+This project includes a **GitHub Actions workflow** that builds the real site and
+deploys the `out/` folder.
+
+**One-time setup (do this once):**
+
+1. Open **https://github.com/Dorvad/roiroiter/settings/pages**
+2. Under **Build and deployment → Source**, choose **GitHub Actions** (not
+   “Deploy from a branch”).
+3. Push to `main` (or run the workflow manually: **Actions → Deploy to GitHub
+   Pages → Run workflow**).
+4. Wait for the green checkmark on the Actions tab (~2–3 minutes).
+
+**Live URL:**
+
+**https://dorvad.github.io/roiroiter/**
+
+(Note the `/roiroiter/` at the end — project sites live in a subfolder.)
+
+**Custom domain later:** if you attach e.g. `roiroiter.art` in Pages settings,
+set repository secret or workflow env `NEXT_BASE_PATH` to empty (`""`) so assets
+load from the domain root, then redeploy.
+
+### Vercel (alternative — simpler URL)
+
+Connect the repo at [vercel.com](https://vercel.com). No subpath, no workflow
+needed. Best if you want `roiroiter.art` at the root without extra config.
 
 ## Develop
 
