@@ -1,61 +1,29 @@
 import Link from "next/link";
-import Image from "next/image";
-import { getImageMeta, type Artwork, type Crop } from "@/lib/data";
-import { artSrc } from "@/lib/paths";
+import { styleFromCss } from "@/lib/css";
+import { cropBackground, type Face } from "@/lib/data";
 
-export function FaceTile({
-  art,
-  sizes = "(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 45vw",
-}: {
-  art: Artwork & { face: Crop };
-  sizes?: string;
-}) {
-  const meta = getImageMeta(art.image);
-  const src = artSrc(art.image);
-
+/**
+ * A single face in the Index of Faces. `caption` toggles the hover label
+ * (shown on the full index, hidden on the home-page teaser).
+ */
+export function FaceTile({ face, caption = true }: { face: Face; caption?: boolean }) {
   return (
-    <Link
-      href={`/artwork/${art.id}`}
-      className="group relative block aspect-square overflow-hidden frame"
-      aria-label={`${art.face.label} \u2014 ${art.title}`}
-    >
-      {/* base layer: the full work, revealed on hover */}
-      <Image
-        src={src}
-        alt=""
-        fill
-        sizes={sizes}
-        placeholder={meta.blur ? "blur" : "empty"}
-        blurDataURL={meta.blur || undefined}
-        aria-hidden
-        className="scale-105 object-contain p-1 opacity-0 transition-all duration-[900ms] ease-[var(--ease-museum)] group-hover:scale-100 group-hover:opacity-100"
-      />
-      {/* top layer: the cropped face, fades to reveal the work beneath */}
-      <Image
-        src={src}
-        alt={`${art.face.label}, from ${art.title}`}
-        fill
-        sizes={sizes}
-        placeholder={meta.blur ? "blur" : "empty"}
-        blurDataURL={meta.blur || undefined}
-        className="object-cover transition-opacity duration-[900ms] ease-[var(--ease-museum)] group-hover:opacity-0"
-        style={{
-          objectPosition: `${art.face.x}% ${art.face.y}%`,
-          transform: `scale(${art.face.zoom})`,
-          transformOrigin: `${art.face.x}% ${art.face.y}%`,
-        }}
-        data-magnify
-      />
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-ink-deep/95 to-transparent p-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-      >
-        <div className="font-display text-base leading-tight text-bone">
-          {art.title}
+    <Link href={`/artwork/${face.id}`} className="facetile" title={face.label}>
+      <div className="facetile-bg" style={styleFromCss(cropBackground(face.img, face.cx, face.cy, face.z))} />
+      <div style={{ position: "absolute", inset: 0, boxShadow: "inset 0 0 55px rgba(0,0,0,.62)", pointerEvents: "none" }} />
+      {caption && (
+        <div className="facetile-cap">
+          <div className="serif" style={{ fontSize: ".98rem", lineHeight: 1.15, fontStyle: "italic", color: "#f0e9dc" }}>
+            {face.label}
+          </div>
+          <div
+            className="mono"
+            style={{ marginTop: 3, fontWeight: 500, fontSize: 8, lineHeight: 1, letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(189,154,87,.85)" }}
+          >
+            View work →
+          </div>
         </div>
-        <div className="label mt-1 text-bone-muted">{art.year}</div>
-      </div>
+      )}
     </Link>
   );
 }
