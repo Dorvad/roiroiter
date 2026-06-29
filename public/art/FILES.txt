@@ -1,0 +1,47 @@
+Roi Roiter — artwork files in public/art/
+=========================================
+
+Each JPEG is referenced from src/lib/data.ts by filename.
+
+Catalogue (35 works, 33 with photography)
+-----------------------------------------
+the-reliquary.jpg               RR·001  The Reliquary
+the-visitation.jpg              RR·002  The Visitation
+painting-gold-mask.jpg          RR·003  Sleep, Unhooked
+painting-tiger.jpg              RR·004  Ambush in the Wallpaper
+painting-blue-woman-serpent.jpg RR·005  Cobalt Annunciation
+carving-blue-cry.jpg            RR·006  Blue Cry
+drawing-horned-janus.jpg        RR·007  Two-Faced Saint with Candle
+drawing-owl.jpg                 RR·008  The Sentinel
+drawing-lynx.jpg                RR·009  Thicket (Watcher)
+drawing-crowd-faces.jpg         RR·010  The Congregation
+drawing-inverted-body.jpg       RR·011  Inverted Torso
+drawing-shield-tree.jpg         RR·012  Genealogy
+study-tree-bridge.jpg           RR·013  Little Bridge, Old Tree
+drawing-parrot-confession.jpg   RR·014  The Parrot Confession
+sketch-octopus-man.jpg          RR·015  Self-Portrait as Cephalopod
+sketch-nude-vase.jpg            RR·016  Two Studies — Figure, Flowers
+sketch-three-figures.jpg        RR·017  Three Who Wait
+(null)                          RR·018  Mask for an Unknown Festival
+(null)                          RR·019  Standing Figure (Olive)
+painting-skull-yellow.jpg       RR·020  Skull on Yellow Ground
+painting-combustion-portrait.jpg RR·021 Combustion Portrait
+painting-orb-bearer.jpg         RR·022  The Orb-Bearer
+painting-green-grin.jpg         RR·023  Green Grin (Colour Study)
+drawing-green-grin.jpg          RR·024  Green Grin
+drawing-blue-lament.jpg         RR·025  Blue Lament
+painting-turquoise-portrait.jpg RR·026  Portrait on Turquoise
+drawing-smoke-portrait.jpg      RR·027  Portrait in Smoke
+study-tree-mountain.jpg         RR·028  Lone Tree (Mountain)
+drawing-horse-lament.jpg        RR·029  The Lamenting Horse
+drawing-broom-witch.jpg         RR·030  The Broom Witch
+drawing-insect-court.jpg        RR·031  The Insect Court
+drawing-knight-lion.jpg         RR·032  Knight with Lion Crest
+drawing-bowler-man.jpg          RR·033  The Bowler
+painting-expressive-portrait.jpg RR·034 Expressive Portrait
+painting-green-scholar.jpg      RR·035  The Green Scholar
+
+Awaiting photographs
+--------------------
+RR·018  Mask for an Unknown Festival (carved walnut)
+RR·019  Standing Figure (Olive) (carved olive wood)
