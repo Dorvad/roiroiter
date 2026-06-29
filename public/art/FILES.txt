@@ -1,0 +1,63 @@
+Roi Roiter — artwork files in public/art/
+=========================================
+
+Each JPEG is referenced from src/lib/data.ts by filename. Drop files here and
+rebuild — no image pipeline required.
+
+On site now (17 works)
+----------------------
+the-reliquary.jpg               RR·001  The Reliquary
+the-visitation.jpg              RR·002  The Visitation
+painting-gold-mask.jpg          RR·003  Sleep, Unhooked
+painting-tiger.jpg              RR·004  Ambush in the Wallpaper
+painting-blue-woman-serpent.jpg RR·005  Cobalt Annunciation
+carving-blue-cry.jpg            RR·006  Blue Cry
+drawing-horned-janus.jpg        RR·007  Two-Faced Saint with Candle
+drawing-owl.jpg                 RR·008  The Sentinel
+drawing-lynx.jpg                RR·009  Thicket (Watcher)
+drawing-crowd-faces.jpg         RR·010  The Congregation
+drawing-inverted-body.jpg       RR·011  Inverted Torso
+drawing-shield-tree.jpg         RR·012  Genealogy
+study-tree-bridge.jpg           RR·013  Little Bridge, Old Tree
+sketch-beak-man.jpg             RR·014  The Appointment
+sketch-octopus-man.jpg          RR·015  Self-Portrait as Cephalopod
+sketch-nude-vase.jpg            RR·016  Two Studies — Figure, Flowers
+sketch-three-figures.jpg        RR·017  Three Who Wait
+
+Carvings awaiting photos (img: null in data.ts)
+-----------------------------------------------
+RR·018  Mask for an Unknown Festival
+RR·019  Standing Figure (Olive)
+RR·020  Small Skull, Pocket-Sized
+
+Suggested filenames for additional uploads
+------------------------------------------
+drawing-horse-lament.jpg        The Lamenting Horse
+drawing-smoke-portrait.jpg      Portrait in Smoke
+painting-turquoise-portrait.jpg Portrait on Turquoise
+drawing-blue-lament.jpg         Blue Lament
+drawing-green-grin.jpg          Green Grin (paper)
+painting-green-grin.jpg         Green Grin (digital)
+painting-orb-bearer.jpg         The Orb-Bearer
+painting-combustion-portrait.jpg Combustion Portrait
+drawing-parrot-confession.jpg   The Parrot Confession
+drawing-pillory-woman.jpg       Pillory Woman
+drawing-flame-bearer.jpg        She Who Carries Fire
+sketch-mosquito-man.jpg         The Mosquito
+sketch-rebel-cat.jpg            The Defiant Cat
+drawing-violet-curls.jpg        Violet Curls
+drawing-thorn-beast.jpg         Thorn Beast
+
+Where images appear on the site
+-------------------------------
+/                 Hero (The Reliquary) + six room tiles
+/gallery          All works — filter by room or motif
+/artwork/[id]     Full work page, lightbox, detail crops
+/available        Available paintings, carvings, drawings
+/index-of-faces   Recurring faces (cropped from several works)
+/cabinet          Five studio drawers of small works
+/studio-notes     Process notes with image headers
+/about            Blue Cry carving portrait
+
+To add a work: drop the JPEG in this folder, add an entry to works in
+src/lib/data.ts (and optionally faces / drawers), then commit and rebuild.
