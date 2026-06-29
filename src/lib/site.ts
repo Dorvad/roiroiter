@@ -1,44 +1,37 @@
 export const site = {
   name: "Roi Roiter",
-  tagline: "Paintings & drawings",
-  heroLine: "Faces, beasts, and bodies.",
-  manifesto: "Surreal paintings and drawings.",
+  tagline: "A surreal private museum",
+  heroLine: "Faces, bodies, beasts, and carved objects.",
+  manifesto:
+    "Drawn from a surreal private mythology — intimate, strange, and quietly theatrical.",
   email: "studio@roiroiter.art",
-  location: "Studio visits by appointment",
-  instagram: "roiroiter",
+  emailCollect: "collect@roiroiter.art",
+  location: "Studio by appointment, in person or by video.",
   url: "https://dorvad.github.io/roiroiter",
 };
 
-export type NavItem = { label: string; href: string; note?: string };
+export type NavItem = { label: string; href: string; cta?: boolean };
 
+/** Primary header / mobile-menu navigation. */
 export const primaryNav: NavItem[] = [
   { label: "Gallery", href: "/gallery" },
+  { label: "Index of Faces", href: "/index-of-faces" },
+  { label: "The Cabinet", href: "/cabinet" },
   { label: "Available", href: "/available" },
-  { label: "Faces", href: "/index-of-faces" },
+  { label: "Studio Notes", href: "/studio-notes" },
   { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "/contact", cta: true },
 ];
 
-export const menuGroups: { title: string; items: NavItem[] }[] = [
-  {
-    title: "Gallery",
-    items: [
-      { label: "All rooms", href: "/gallery" },
-      { label: "The Face Room", href: "/gallery/face" },
-      { label: "The Body Room", href: "/gallery/body" },
-      { label: "The Beast Room", href: "/gallery/beast" },
-      { label: "The Absurd Room", href: "/gallery/absurd" },
-    ],
-  },
-  {
-    title: "More",
-    items: [
-      { label: "Index of Faces", href: "/index-of-faces" },
-      { label: "Browse by Symbol", href: "/symbols" },
-      { label: "The Cabinet", href: "/cabinet" },
-      { label: "Available Works", href: "/available" },
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
+export const footerWander: NavItem[] = [
+  { label: "The Gallery", href: "/gallery" },
+  { label: "Index of Faces", href: "/index-of-faces" },
+  { label: "The Cabinet", href: "/cabinet" },
+  { label: "Available Works", href: "/available" },
+];
+
+export const footerStudio: NavItem[] = [
+  { label: "Studio Notes", href: "/studio-notes" },
+  { label: "About Roi Roiter", href: "/about" },
+  { label: "Contact / Collector List", href: "/contact" },
 ];

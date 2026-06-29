@@ -1,68 +1,145 @@
 import Link from "next/link";
-import { menuGroups, site } from "@/lib/site";
-import { CollectorSignup } from "@/components/CollectorSignup";
-import { Hairline } from "@/components/ui";
-import { Logo } from "@/components/Logo";
+import { asset } from "@/lib/asset";
+import { footerStudio, footerWander, type NavItem } from "@/lib/site";
+
+function Column({ title, items }: { title: string; items: NavItem[] }) {
+  return (
+    <div>
+      <div
+        className="mono"
+        style={{
+          fontWeight: 500,
+          fontSize: 9.5,
+          lineHeight: 1,
+          letterSpacing: ".24em",
+          textTransform: "uppercase",
+          color: "rgba(189,154,87,.7)",
+          marginBottom: 18,
+        }}
+      >
+        {title}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="lnk"
+            style={{ fontSize: 14, lineHeight: 1, color: "rgba(233,225,211,.72)" }}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function Footer() {
   return (
-    <footer className="relative mt-32 border-t border-[var(--hairline)]">
-      <div className="mx-auto max-w-[88rem] px-5 py-20 sm:px-8">
-        <div className="grid gap-16 lg:grid-cols-[1.2fr_1.8fr]">
-          <div>
-            <CollectorSignup variant="full" />
-          </div>
-
-          <div className="grid gap-10 sm:grid-cols-3">
-            {menuGroups.map((group) => (
-              <div key={group.title}>
-                <div className="label mb-4 text-bone-muted">{group.title}</div>
-                <ul className="space-y-2.5">
-                  {group.items.map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className="text-sm text-bone-dim transition-colors hover:text-gold"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <Hairline className="my-12" />
-
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <Link
-              href="/"
-              className="group inline-flex items-center gap-3"
-              aria-label="Roi Roiter, home"
+    <footer
+      style={{
+        position: "relative",
+        zIndex: 1,
+        borderTop: "1px solid rgba(233,225,211,.08)",
+        background: "#080605",
+        padding: "clamp(46px,7vw,76px) clamp(24px,6vw,96px) clamp(34px,5vw,52px)",
+      }}
+    >
+      <div
+        className="rr-footer-grid"
+        style={{
+          maxWidth: 1400,
+          margin: "0 auto",
+          display: "grid",
+          gap: "clamp(28px,4vw,60px)",
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+            <img
+              src={asset("/brand/monogram-gold.png")}
+              alt=""
+              width={38}
+              height={38}
+              style={{ width: 38, height: 38, objectFit: "contain", opacity: 0.9 }}
+            />
+            <span
+              className="serif"
+              style={{
+                fontWeight: 600,
+                fontSize: 13,
+                lineHeight: 1.3,
+                letterSpacing: ".3em",
+                textTransform: "uppercase",
+                color: "#ece4d6",
+              }}
             >
-              <Logo className="h-9 w-9 text-bone transition-colors duration-500 group-hover:text-gold" />
-              <span className="font-display text-3xl text-bone transition-colors duration-500 group-hover:text-gold">
-                Roi Roiter
-              </span>
-            </Link>
-            <p className="prose-serif mt-4 max-w-md text-base text-bone-muted">
-              {site.tagline}
-            </p>
+              Roi&nbsp;Roiter
+            </span>
           </div>
-          <div className="space-y-1.5 text-sm text-bone-muted sm:text-right">
-            <a href={`mailto:${site.email}`} className="block link-underline">
-              {site.email}
-            </a>
-            <p>{site.location}</p>
-            <p className="label mt-4 text-bone-muted/70">
-              &copy; {new Date().getFullYear()} Roi Roiter
-            </p>
-          </div>
+          <p
+            className="serif"
+            style={{
+              margin: "20px 0 0",
+              maxWidth: 300,
+              fontSize: "1.02rem",
+              lineHeight: 1.6,
+              fontStyle: "italic",
+              color: "rgba(168,156,137,.8)",
+            }}
+          >
+            Faces, bodies, beasts, and carved objects from a surreal private
+            mythology.
+          </p>
         </div>
+
+        <Column title="Wander" items={footerWander} />
+        <Column title="The Studio" items={footerStudio} />
       </div>
+
+      <div
+        style={{
+          maxWidth: 1400,
+          margin: "clamp(40px,5vw,60px) auto 0",
+          paddingTop: 26,
+          borderTop: "1px solid rgba(233,225,211,.07)",
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 12,
+        }}
+      >
+        <span
+          className="mono"
+          style={{
+            fontSize: 10.5,
+            lineHeight: 1.5,
+            letterSpacing: ".08em",
+            color: "rgba(168,156,137,.5)",
+          }}
+        >
+          © Roi Roiter. All works and images remain the property of the artist.
+        </span>
+        <span
+          className="mono"
+          style={{
+            fontSize: 10.5,
+            lineHeight: 1.5,
+            letterSpacing: ".08em",
+            color: "rgba(168,156,137,.5)",
+          }}
+        >
+          Studio by appointment · Catalogue raisonné in progress
+        </span>
+      </div>
+
+      <style>{`
+        .rr-footer-grid { grid-template-columns: 1.5fr 1fr 1fr; }
+        @media (max-width: 980px) { .rr-footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 560px) { .rr-footer-grid { grid-template-columns: 1fr; } }
+      `}</style>
     </footer>
   );
 }

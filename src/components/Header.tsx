@@ -1,176 +1,219 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
-import { primaryNav, menuGroups, site } from "@/lib/site";
-import { CartButton } from "@/components/cart/CartButton";
-import { Logo } from "@/components/Logo";
-import { hasLogoAsset } from "@/lib/data";
-import { artSrc } from "@/lib/paths";
-
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(href + "/");
-}
+import { asset } from "@/lib/asset";
+import { primaryNav } from "@/lib/site";
 
 export function Header() {
-  const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 28);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+  // Close the mobile menu on navigation.
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
+  // Lock scroll while the full-screen menu is open.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
-    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
     };
   }, [menuOpen]);
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-700 ${
-          scrolled || menuOpen
-            ? "border-b border-[var(--hairline)] bg-ink/85 backdrop-blur-md"
-            : "border-b border-transparent bg-transparent"
-        }`}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 66,
+          padding: "0 clamp(18px,5vw,80px)",
+          background: "rgba(10,8,6,.74)",
+          backdropFilter: "blur(13px) saturate(1.1)",
+          WebkitBackdropFilter: "blur(13px) saturate(1.1)",
+          borderBottom: "1px solid rgba(233,225,211,.08)",
+        }}
       >
-        <div className="mx-auto flex max-w-[88rem] items-center justify-between gap-6 px-5 py-4 sm:px-8">
-          <Link href="/" className="group flex items-center gap-3" aria-label="Roi Roiter, home">
-            {hasLogoAsset() ? (
-              <Image
-                src={artSrc("roiter-logo.png")}
-                alt=""
-                width={32}
-                height={32}
-                className="h-8 w-8 invert transition-opacity group-hover:opacity-80"
-              />
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 13 }}>
+          <img
+            src={asset("/brand/monogram-white.png")}
+            alt="Roi Roiter"
+            width={30}
+            height={30}
+            style={{ width: 30, height: 30, objectFit: "contain", opacity: 0.92 }}
+          />
+          <span
+            className="serif"
+            style={{
+              fontWeight: 600,
+              fontSize: 13,
+              lineHeight: 1,
+              letterSpacing: ".36em",
+              textTransform: "uppercase",
+              color: "#ece4d6",
+            }}
+          >
+            Roi&nbsp;Roiter
+          </span>
+        </Link>
+
+        {/* Desktop navigation */}
+        <nav className="rr-nav" style={{ alignItems: "center", gap: "clamp(13px,1.5vw,24px)" }}>
+          {primaryNav.map((item) =>
+            item.cta ? (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="mono lnk"
+                style={{
+                  fontWeight: 500,
+                  fontSize: 10.5,
+                  letterSpacing: ".18em",
+                  textTransform: "uppercase",
+                  color: "#bd9a57",
+                  border: "1px solid rgba(189,154,87,.4)",
+                  padding: "9px 14px",
+                }}
+              >
+                {item.label}
+              </Link>
             ) : (
-              <Logo className="h-8 w-8 text-bone transition-colors duration-500 group-hover:text-gold" />
-            )}
-            <span className="font-display text-xl text-bone transition-colors group-hover:text-gold sm:text-2xl">
+              <Link
+                key={item.href}
+                href={item.href}
+                className="mono lnk"
+                style={{
+                  fontWeight: 500,
+                  fontSize: 10.5,
+                  letterSpacing: ".18em",
+                  textTransform: "uppercase",
+                  color: "rgba(233,225,211,.72)",
+                }}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
+        </nav>
+
+        {/* Mobile burger */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Menu"
+          className="rr-burger"
+          style={{
+            flexDirection: "column",
+            gap: 5,
+            width: 42,
+            height: 42,
+            alignItems: "center",
+            justifyContent: "center",
+            background: "transparent",
+            border: "1px solid rgba(233,225,211,.18)",
+            cursor: "pointer",
+          }}
+        >
+          <span style={{ width: 18, height: 1.5, background: "#e9e1d3" }} />
+          <span style={{ width: 18, height: 1.5, background: "#e9e1d3" }} />
+        </button>
+      </header>
+
+      {menuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1400,
+            background: "rgba(8,6,5,.97)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            flexDirection: "column",
+            padding: 24,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              height: 42,
+            }}
+          >
+            <span
+              className="serif"
+              style={{
+                fontWeight: 600,
+                fontSize: 13,
+                lineHeight: 1,
+                letterSpacing: ".36em",
+                textTransform: "uppercase",
+                color: "#ece4d6",
+              }}
+            >
               Roi&nbsp;Roiter
             </span>
-          </Link>
-
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+            <button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close"
+              style={{
+                background: "transparent",
+                border: "1px solid rgba(233,225,211,.2)",
+                color: "#e9e1d3",
+                width: 42,
+                height: 42,
+                fontSize: 20,
+                cursor: "pointer",
+              }}
+            >
+              ×
+            </button>
+          </div>
+          <nav
+            style={{
+              margin: "auto 0",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+            }}
+          >
             {primaryNav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`label transition-colors duration-300 hover:text-bone ${
-                  isActive(pathname, item.href) ? "text-gold" : "text-bone-muted"
-                }`}
+                className="serif"
+                style={{
+                  fontWeight: 500,
+                  fontSize: "2rem",
+                  lineHeight: 1.25,
+                  color: item.cta ? "#bd9a57" : "#ece4d6",
+                }}
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-
-          <div className="flex items-center gap-5">
-            <CartButton className="hidden sm:inline-flex" />
-            <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="label inline-flex items-center gap-2 text-bone transition-colors hover:text-gold"
-              aria-expanded={menuOpen}
-              aria-label="Open the index"
-            >
-              <span className="flex flex-col gap-[3px]" aria-hidden>
-                <span className="h-px w-5 bg-current" />
-                <span className="h-px w-5 bg-current" />
-                <span className="h-px w-3 bg-current" />
-              </span>
-              Index
-            </button>
-          </div>
         </div>
-      </header>
+      )}
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 overflow-y-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="texture-paper min-h-full border-b border-[var(--hairline-gold)]">
-              <div className="mx-auto max-w-[88rem] px-5 pb-16 pt-28 sm:px-8 sm:pt-32">
-                <div className="grid gap-12 lg:grid-cols-[1.1fr_2fr]">
-                  <motion.div
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.05 }}
-                  >
-                    <div className="label label-gold">The Index</div>
-                    <p className="deco-quote mt-5 max-w-md text-3xl leading-snug text-bone sm:text-4xl">
-                      {site.heroLine}
-                    </p>
-                    <div className="mt-8 space-y-1.5 text-sm text-bone-muted">
-                      <a
-                        href={`mailto:${site.email}`}
-                        className="link-underline block"
-                      >
-                        {site.email}
-                      </a>
-                      <p>{site.location}</p>
-                    </div>
-                  </motion.div>
-
-                  <div className="grid gap-10 sm:grid-cols-3">
-                    {menuGroups.map((group, gi) => (
-                      <motion.div
-                        key={group.title}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.1 + gi * 0.08 }}
-                      >
-                        <div className="label mb-4 text-bone-muted">{group.title}</div>
-                        <ul className="space-y-3.5">
-                          {group.items.map((item) => (
-                            <li key={item.href}>
-                              <Link
-                                href={item.href}
-                                className="group block"
-                              >
-                                <span className="font-display text-xl text-bone transition-colors duration-300 group-hover:text-gold sm:text-2xl">
-                                  {item.label}
-                                </span>
-                                {item.note && (
-                                  <span className="mt-0.5 block text-xs text-bone-muted">
-                                    {item.note}
-                                  </span>
-                                )}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <style>{`
+        .rr-nav { display: flex; }
+        .rr-burger { display: none; }
+        @media (max-width: 980px) {
+          .rr-nav { display: none; }
+          .rr-burger { display: flex; }
+        }
+      `}</style>
     </>
   );
 }

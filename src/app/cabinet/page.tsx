@@ -1,60 +1,35 @@
 import type { Metadata } from "next";
-import { Container, PageHeader } from "@/components/Page";
-import { Reveal } from "@/components/motion/Reveal";
-import { CabinetDrawers, type CabinetDrawerData } from "@/components/CabinetDrawers";
-import { artworks } from "@/lib/data";
+import { CabinetDrawers } from "@/components/CabinetDrawers";
 
 export const metadata: Metadata = {
-  title: "The Cabinet",
+  title: "The Studio Cabinet",
+  description:
+    "Small works, carvings, studies, experiments and strange objects — kept the way they are kept in the studio.",
 };
 
-const toItems = (type: "drawing" | "carving" | "painting") =>
-  artworks
-    .filter((a) => a.type === type)
-    .map((a) => ({
-      title: a.title,
-      image: a.image,
-      status: a.status,
-      href: `/artwork/${a.id}`,
-      focus: a.face,
-    }));
-
-const drawers: CabinetDrawerData[] = [
-  {
-    id: "drawings",
-    label: "Sketchbook",
-    note: "Ink on paper",
-    items: toItems("drawing"),
-  },
-  {
-    id: "carvings",
-    label: "Carvings",
-    note: "Wood & paint",
-    items: toItems("carving"),
-  },
-  {
-    id: "paintings",
-    label: "Paintings",
-    note: "Oil on canvas",
-    items: toItems("painting"),
-  },
-];
-
 export default function CabinetPage() {
-  const active = drawers.filter((d) => d.items.length > 0);
-
   return (
-    <div className="pb-10">
-      <PageHeader kicker="Cabinet" title="Drawers" />
-      <Container className="mt-12">
-        {active.length === 0 ? (
-          <p className="text-bone-muted">Empty.</p>
-        ) : (
-          <Reveal>
-            <CabinetDrawers drawers={active} />
-          </Reveal>
-        )}
-      </Container>
+    <div style={{ paddingTop: 66 }}>
+      <section
+        style={{ maxWidth: 1100, margin: "0 auto", padding: "clamp(46px,7vw,96px) clamp(20px,5vw,72px) clamp(26px,4vw,44px)" }}
+      >
+        <div className="kicker">The Studio Cabinet</div>
+        <h1 className="serif" style={{ margin: "20px 0 0", fontWeight: 500, fontSize: "clamp(2.5rem,5.6vw,4.6rem)", lineHeight: 1, color: "#f1ebde" }}>
+          Open the drawers.
+        </h1>
+        <p
+          className="serif"
+          style={{ margin: "22px 0 0", maxWidth: 640, fontSize: "clamp(1.1rem,1.7vw,1.35rem)", lineHeight: 1.55, fontStyle: "italic", color: "rgba(233,225,211,.8)" }}
+        >
+          Small works, carvings, studies, experiments and strange objects, kept the
+          way they are kept in the studio — in drawers, some half-finished, some
+          already spoken for. Pull one open.
+        </p>
+      </section>
+
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "6px clamp(20px,5vw,72px) clamp(60px,10vh,120px)" }}>
+        <CabinetDrawers />
+      </section>
     </div>
   );
 }

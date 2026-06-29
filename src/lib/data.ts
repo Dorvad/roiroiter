@@ -1,409 +1,759 @@
-import meta from "./image-meta.json";
+import { artUrl } from "./asset";
 
-export type RoomId = "face" | "body" | "beast" | "absurd";
-export type SymbolId =
+/* ============================================================
+   Roi Roiter — a surreal private museum
+   Catalogue data, rooms, motifs, the index of faces,
+   the studio cabinet, and studio notes.
+   ============================================================ */
+
+export type RoomKey =
   | "face"
-  | "mask"
-  | "animal"
   | "body"
-  | "hand"
-  | "desert"
-  | "machine"
-  | "sleep"
-  | "absurdity"
-  | "ritual";
-export type MediumType = "drawing" | "carving" | "painting";
-export type Status = "Available" | "Sold" | "Private Collection" | "Inquiry";
+  | "beast"
+  | "ritual"
+  | "absurd"
+  | "carved";
+
+export type Category = "painting" | "carving" | "drawing" | "edition";
+export type Kind = "canvas" | "paper" | "wood" | "gold";
+export type Status =
+  | "Available"
+  | "Inquiry"
+  | "Sold"
+  | "Private Collection";
 
 export interface Crop {
-  label: string;
-  x: number;
-  y: number;
-  zoom: number;
+  cap: string;
+  cx: number;
+  cy: number;
+  z: number;
 }
 
-export interface Artwork {
+export interface Work {
   id: string;
+  no: string;
   title: string;
-  year: number;
+  year: string;
   medium: string;
-  type: MediumType;
-  dimensions: string;
+  dims: string;
   status: Status;
-  room: RoomId;
-  symbols: SymbolId[];
-  image: string;
-  price?: number | null;
-  details?: Crop[];
-  face?: Crop;
-  featured?: boolean;
-  hero?: boolean;
+  room: RoomKey;
+  cat: Category;
+  sym: string[];
+  /** filename in /public/art, or null when photography is forthcoming */
+  img: string | null;
+  cropx?: number;
+  cropy?: number;
+  zoom?: number;
+  kind: Kind;
+  poetic: string;
+  note: string;
+  price: string;
+  crops: Crop[];
 }
-
-export interface ImageMeta {
-  w: number;
-  h: number;
-  blur: string;
-}
-
-const imageMeta = meta as Record<string, ImageMeta>;
-const metaKey = (image: string) => image.replace(/\.[^/.]+$/, "");
-
-export function getImageMeta(image: string): ImageMeta {
-  return imageMeta[metaKey(image)] ?? { w: 1200, h: 1600, blur: "" };
-}
-
-export const hasImageAsset = (image: string) => metaKey(image) in imageMeta;
 
 export interface Room {
-  id: RoomId;
+  key: RoomKey;
   name: string;
-  href: string;
-  subtitle: string;
-  image: string;
-  focus: { x: number; y: number; zoom: number };
+  sub: string;
+  blurb: string;
+  img: string | null;
+  cx?: number;
+  cy?: number;
+  z?: number;
+  kind?: Kind;
+}
+
+export interface Face {
+  id: string;
+  label: string;
+  img: string;
+  cx: number;
+  cy: number;
+  z: number;
+}
+
+export interface Drawer {
+  key: string;
+  label: string;
+  sub: string;
+  itemIds: string[];
+}
+
+export interface Note {
+  id: string;
+  date: string;
+  tag: string;
+  title: string;
+  img: string;
+  cx: number;
+  cy: number;
+  z: number;
+  body: string;
 }
 
 export const rooms: Room[] = [
   {
-    id: "face",
+    key: "face",
     name: "The Face Room",
-    href: "/gallery/face",
-    subtitle: "Faces",
-    image: "roiter-faces.jpg",
-    focus: { x: 50, y: 45, zoom: 1.1 },
+    sub: "masks · skulls · portraits",
+    blurb:
+      "Painted and carved faces, masks, skull-like portraits, and expressions caught mid-collapse.",
+    img: "the-reliquary.jpg",
+    cx: 51,
+    cy: 15,
+    z: 128,
   },
   {
-    id: "body",
+    key: "body",
     name: "The Body Room",
-    href: "/gallery/body",
-    subtitle: "Bodies",
-    image: "roiter-torso.jpg",
-    focus: { x: 50, y: 42, zoom: 1.15 },
+    sub: "hands · wounds · sleepers",
+    blurb:
+      "Hands the size of weather, sleeping figures, strange anatomy, bodies mistaken for landscape.",
+    img: "the-visitation.jpg",
+    cx: 30,
+    cy: 46,
+    z: 140,
   },
   {
-    id: "beast",
+    key: "beast",
     name: "The Beast Room",
-    href: "/gallery/beast",
-    subtitle: "Animals",
-    image: "roiter-jungle-cat.jpg",
-    focus: { x: 50, y: 38, zoom: 1.2 },
+    sub: "claws · instinct · hybrids",
+    blurb:
+      "Animals, claws, instinct and protection — figures undecided about whether to be human.",
+    img: "the-visitation.jpg",
+    cx: 52,
+    cy: 13,
+    z: 205,
   },
   {
-    id: "absurd",
+    key: "ritual",
+    name: "The Ritual Room",
+    sub: "icons · ceremony · myth",
+    blurb:
+      "Works that feel religious, ceremonial and icon-like — devotion paid to uncertain gods.",
+    img: "the-reliquary.jpg",
+    cx: 50,
+    cy: 60,
+    z: 150,
+  },
+  {
+    key: "absurd",
     name: "The Absurd Room",
-    href: "/gallery/absurd",
-    subtitle: "Strange scenes",
-    image: "roiter-demon-candle.jpg",
-    focus: { x: 50, y: 38, zoom: 1.15 },
+    sub: "scale · machines · humour",
+    blurb:
+      "Strange scale, tiny figures, obsolete machines, and the quiet comedy of dread.",
+    img: "the-visitation.jpg",
+    cx: 85,
+    cy: 82,
+    z: 300,
+  },
+  {
+    key: "carved",
+    name: "The Carved Archive",
+    sub: "wood · masks · objects",
+    blurb:
+      "Wood carvings, masks, wooden figures and studio artifacts — presences, not products.",
+    img: null,
+    kind: "wood",
   },
 ];
 
-export interface Symbol {
-  id: SymbolId;
-  name: string;
-}
-
-export const symbols: Symbol[] = [
-  { id: "face", name: "Face" },
-  { id: "mask", name: "Mask" },
-  { id: "animal", name: "Animal" },
-  { id: "body", name: "Body" },
-  { id: "hand", name: "Hand" },
-  { id: "desert", name: "Desert" },
-  { id: "machine", name: "Machine" },
-  { id: "sleep", name: "Sleep" },
-  { id: "absurdity", name: "Absurdity" },
-  { id: "ritual", name: "Ritual" },
+export const symbols: string[] = [
+  "Face",
+  "Mask",
+  "Animal",
+  "Hand",
+  "Wound",
+  "Body",
+  "Machine",
+  "Desert",
+  "Sleep",
+  "Death",
+  "Wood",
+  "Ritual",
+  "Absurdity",
 ];
 
-export const symbolById = (id: SymbolId) => symbols.find((s) => s.id === id)!;
-
-/** Real works only — add matching files to public/art/ then run npm run art:meta */
-const allArtworks: Artwork[] = [
+export const works: Work[] = [
   {
-    id: "faces",
-    title: "Faces",
-    year: 2024,
-    medium: "Ink & marker on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
+    id: "reliquary",
+    no: "RR·001",
+    title: "The Reliquary",
+    year: "2023",
+    medium: "Oil on linen",
+    dims: "90 × 60 cm",
+    status: "Private Collection",
     room: "face",
-    symbols: ["face", "mask"],
-    image: "roiter-faces.jpg",
-    price: null,
-    featured: true,
-    hero: true,
-    face: { label: "Pink head", x: 50, y: 32, zoom: 1.6 },
+    cat: "painting",
+    sym: ["Face", "Mask", "Death", "Ritual", "Body"],
+    img: "the-reliquary.jpg",
+    cropx: 50,
+    cropy: 19,
+    zoom: 132,
+    kind: "canvas",
+    poetic:
+      "A noblewoman wears her own death as a second face, and cradles a man where a lapdog should sleep.",
+    note: "Painted through a long winter of copying the old masters until their varnish felt like my own skin. The skull is not a warning. It is the sitter’s true expression, finally allowed out for the portrait.",
+    price: "Private Collection",
+    crops: [
+      { cap: "The skull-mask", cx: 50, cy: 20, z: 235 },
+      { cap: "The held man", cx: 52, cy: 64, z: 250 },
+      { cap: "Rosary & bodice", cx: 42, cy: 50, z: 220 },
+    ],
   },
   {
-    id: "demon-and-candle",
-    title: "Demon & Candle",
-    year: 2024,
-    medium: "Ink & marker on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "absurd",
-    symbols: ["face", "mask", "ritual", "absurdity"],
-    image: "roiter-demon-candle.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Demon", x: 50, y: 38, zoom: 1.5 },
-  },
-  {
-    id: "jungle-cat",
-    title: "Jungle Cat",
-    year: 2024,
-    medium: "Ink & marker on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "beast",
-    symbols: ["animal"],
-    image: "roiter-jungle-cat.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Cat", x: 50, y: 40, zoom: 1.6 },
-  },
-  {
-    id: "owl",
-    title: "Owl",
-    year: 2024,
-    medium: "Ink & marker on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "beast",
-    symbols: ["animal", "ritual"],
-    image: "roiter-owl.jpg",
-    price: null,
-    face: { label: "Owl", x: 50, y: 42, zoom: 1.4 },
-  },
-  {
-    id: "torso",
-    title: "Torso",
-    year: 2024,
-    medium: "Ink & marker on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
+    id: "visitation",
+    no: "RR·002",
+    title: "The Visitation",
+    year: "2024",
+    medium: "Oil on linen",
+    dims: "120 × 80 cm",
     status: "Available",
     room: "body",
-    symbols: ["body"],
-    image: "roiter-torso.jpg",
-    price: null,
+    cat: "painting",
+    sym: ["Hand", "Desert", "Sleep", "Body", "Machine", "Beast", "Absurdity"],
+    img: "the-visitation.jpg",
+    cropx: 36,
+    cropy: 50,
+    zoom: 138,
+    kind: "canvas",
+    poetic:
+      "A hand the size of weather reaches across the desert while a beast scores four wounds into a passing face.",
+    note: "The largest canvas I have finished. Everything in it is a memory I could not place — the claw, the small businessman, the dead monitor. I painted them together so they would finally leave me alone. Beneath them a sleeper dreams the entire event.",
+    price: "Price on request",
+    crops: [
+      { cap: "The open hand", cx: 34, cy: 54, z: 188 },
+      { cap: "Claw & wounds", cx: 74, cy: 24, z: 240 },
+      { cap: "The sleeper", cx: 22, cy: 84, z: 225 },
+      { cap: "The small man & his machine", cx: 80, cy: 84, z: 255 },
+    ],
   },
   {
-    id: "three-figures",
-    title: "Three Figures",
-    year: 2024,
-    medium: "Ink on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "absurd",
-    symbols: ["body", "absurdity"],
-    image: "roiter-three-figures.jpg",
-    price: null,
-    face: { label: "Center figure", x: 50, y: 45, zoom: 1.5 },
-  },
-  {
-    id: "nude-and-vase",
-    title: "Nude & Vase",
-    year: 2024,
-    medium: "Ink on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "body",
-    symbols: ["body", "ritual"],
-    image: "roiter-nude-and-vase.jpg",
-    price: null,
-    face: { label: "Figure", x: 35, y: 40, zoom: 1.5 },
-  },
-  {
-    id: "octopus-face",
-    title: "Octopus Face",
-    year: 2024,
-    medium: "Ink on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "face",
-    symbols: ["face", "animal", "absurdity"],
-    image: "roiter-octopus-face.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Face", x: 50, y: 35, zoom: 1.5 },
-  },
-  {
-    id: "bird-gunman",
-    title: "Bird & Gun",
-    year: 2024,
-    medium: "Ink on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "face",
-    symbols: ["face", "mask", "animal"],
-    image: "roiter-bird-gunman.jpg",
-    price: null,
-    face: { label: "Mask", x: 50, y: 28, zoom: 1.6 },
-  },
-  {
-    id: "cyclops-carving",
-    title: "Cyclops",
-    year: 2024,
-    medium: "Carved wood & paint",
-    type: "carving",
-    dimensions: "Sculpture",
-    status: "Available",
-    room: "face",
-    symbols: ["face", "mask", "ritual"],
-    image: "roiter-cyclops-carving.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Eye", x: 50, y: 38, zoom: 1.8 },
-  },
-  {
-    id: "tree-and-bridge",
-    title: "Tree & Bridge",
-    year: 2024,
-    medium: "Colored pencil on paper",
-    type: "drawing",
-    dimensions: "A4",
-    status: "Available",
-    room: "absurd",
-    symbols: ["absurdity", "ritual"],
-    image: "roiter-tree-and-bridge.jpg",
-    price: null,
-  },
-  {
-    id: "heraldic-tree",
-    title: "Heraldic Tree",
-    year: 2024,
-    medium: "Ink & marker on paper",
-    type: "drawing",
-    dimensions: "A4 sketchbook",
-    status: "Available",
-    room: "absurd",
-    symbols: ["body", "ritual", "absurdity"],
-    image: "roiter-heraldic-tree.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Shields", x: 50, y: 30, zoom: 1.4 },
-  },
-  {
-    id: "golden-fragment",
-    title: "Golden Fragment",
-    year: 2024,
+    id: "gold-mask",
+    no: "RR·003",
+    title: "Sleep, Unhooked",
+    year: "2023",
     medium: "Oil on canvas",
-    type: "painting",
-    dimensions: "Canvas",
+    dims: "30 × 24 cm",
     status: "Available",
     room: "face",
-    symbols: ["face", "mask", "body"],
-    image: "roiter-golden-fragment.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Fragment", x: 50, y: 42, zoom: 1.6 },
+    cat: "painting",
+    sym: ["Face", "Mask", "Sleep"],
+    img: "painting-gold-mask.jpg",
+    cropx: 48,
+    cropy: 50,
+    zoom: 150,
+    kind: "canvas",
+    poetic:
+      "A face lifts away from its own skull like a mask taken off for the night.",
+    note: "A small painting about the moment before sleep, when the face you wear all day finally loosens. I left the support pole visible. Every mask needs something to hang on.",
+    price: "$1,400",
+    crops: [
+      { cap: "Parting lips", cx: 48, cy: 60, z: 235 },
+      { cap: "The hollow brow", cx: 47, cy: 40, z: 230 },
+    ],
   },
   {
     id: "tiger",
-    title: "Tiger",
-    year: 2024,
+    no: "RR·004",
+    title: "Ambush in the Wallpaper",
+    year: "2022",
     medium: "Oil on canvas",
-    type: "painting",
-    dimensions: "Canvas",
-    status: "Available",
+    dims: "40 × 50 cm",
+    status: "Sold",
     room: "beast",
-    symbols: ["animal", "face"],
-    image: "roiter-tiger.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Tiger", x: 50, y: 40, zoom: 1.5 },
+    cat: "painting",
+    sym: ["Animal", "Beast", "Death"],
+    img: "painting-tiger.jpg",
+    cropx: 48,
+    cropy: 44,
+    zoom: 140,
+    kind: "canvas",
+    poetic:
+      "A tiger turns inside the foliage, mouth open, deciding whether you are prey or pattern.",
+    note: "Begun as a study of a houseplant and finished as a predator. The leaves and the cat are painted with the same brush, so you cannot quite tell where the garden ends and the animal begins.",
+    price: "Sold",
+    crops: [
+      { cap: "The eye", cx: 42, cy: 42, z: 245 },
+      { cap: "Open jaw", cx: 56, cy: 46, z: 220 },
+    ],
   },
   {
-    id: "blue-bust-bird",
-    title: "Blue Bust & Bird",
-    year: 2024,
-    medium: "Oil on canvas",
-    type: "painting",
-    dimensions: "Canvas",
+    id: "blue-woman",
+    no: "RR·005",
+    title: "Cobalt Annunciation",
+    year: "2024",
+    medium: "Ink & digital colour",
+    dims: "Edition of 12",
+    status: "Available",
+    room: "body",
+    cat: "edition",
+    sym: ["Body", "Animal", "Face"],
+    img: "painting-blue-woman-serpent.jpg",
+    cropx: 48,
+    cropy: 30,
+    zoom: 132,
+    kind: "paper",
+    poetic:
+      "A blue woman receives a dragonfly at her ear while an orange creature uncoils from her own lap.",
+    note: "Drawn in a single night and coloured flat, like a saint’s card from a religion I invented. The insect is the messenger. The serpent-man is the message.",
+    price: "From $180 · edition",
+    crops: [
+      { cap: "The messenger", cx: 74, cy: 30, z: 235 },
+      { cap: "The coiled man", cx: 62, cy: 74, z: 200 },
+    ],
+  },
+  {
+    id: "carving-blue",
+    no: "RR·006",
+    title: "Blue Cry",
+    year: "2023",
+    medium: "Carved & painted driftwood",
+    dims: "41 × 16 × 14 cm",
+    status: "Available",
+    room: "carved",
+    cat: "carving",
+    sym: ["Face", "Mask", "Wood"],
+    img: "carving-blue-cry.jpg",
+    cropx: 52,
+    cropy: 40,
+    zoom: 150,
+    kind: "wood",
+    poetic:
+      "A length of driftwood opens one enormous eye and a perfectly round mouth, caught mid-cry.",
+    note: "The log already held the hollow; I only found the face around it. Carved with gouge and knife, sealed, then painted in blues so the grain still breathes underneath. It is heavier than it looks, and it watches the room.",
+    price: "$2,200",
+    crops: [
+      { cap: "The eye", cx: 55, cy: 42, z: 240 },
+      { cap: "The open mouth", cx: 52, cy: 66, z: 245 },
+      { cap: "Grain & toolmarks", cx: 38, cy: 28, z: 240 },
+    ],
+  },
+  {
+    id: "horned-janus",
+    no: "RR·007",
+    title: "Two-Faced Saint with Candle",
+    year: "2023",
+    medium: "Ink & marker on paper",
+    dims: "29 × 21 cm",
+    status: "Available",
+    room: "ritual",
+    cat: "drawing",
+    sym: ["Face", "Beast", "Ritual", "Death"],
+    img: "drawing-horned-janus.jpg",
+    cropx: 45,
+    cropy: 38,
+    zoom: 158,
+    kind: "paper",
+    poetic:
+      "A horned head wearing two faces at once burns above a single blue candlestick.",
+    note: "A devil, or a saint drawn by someone who never met one. The second profile grows a green beard of smoke. The candle keeps them both honest.",
+    price: "$480",
+    crops: [
+      { cap: "The horned brow", cx: 50, cy: 30, z: 215 },
+      { cap: "The candle", cx: 50, cy: 76, z: 235 },
+    ],
+  },
+  {
+    id: "owl",
+    no: "RR·008",
+    title: "The Sentinel",
+    year: "2022",
+    medium: "Ink & marker on paper",
+    dims: "29 × 21 cm",
+    status: "Available",
+    room: "beast",
+    cat: "drawing",
+    sym: ["Animal", "Beast"],
+    img: "drawing-owl.jpg",
+    cropx: 50,
+    cropy: 36,
+    zoom: 150,
+    kind: "paper",
+    poetic:
+      "An owl built entirely of scales keeps watch beneath a pen-drawn moon.",
+    note: "Every feather drawn as a separate scale until the bird became a kind of armour. The moon is hollow, on purpose.",
+    price: "$420",
+    crops: [
+      { cap: "The eyes", cx: 50, cy: 34, z: 220 },
+      { cap: "Scaled breast", cx: 50, cy: 62, z: 205 },
+    ],
+  },
+  {
+    id: "lynx",
+    no: "RR·009",
+    title: "Thicket (Watcher)",
+    year: "2022",
+    medium: "Ink & marker on paper",
+    dims: "29 × 21 cm",
+    status: "Private Collection",
+    room: "beast",
+    cat: "drawing",
+    sym: ["Animal", "Beast"],
+    img: "drawing-lynx.jpg",
+    cropx: 52,
+    cropy: 44,
+    zoom: 152,
+    kind: "paper",
+    poetic:
+      "A wild cat’s face surfaces from a tangle of striped leaves, half hidden, fully aware.",
+    note: "Drawn entirely in cross-hatch, then the foliage flooded in around it in colour. The cat was here first.",
+    price: "Private Collection",
+    crops: [{ cap: "The face", cx: 52, cy: 44, z: 225 }],
+  },
+  {
+    id: "crowd",
+    no: "RR·010",
+    title: "The Congregation",
+    year: "2023",
+    medium: "Ink & marker on paper",
+    dims: "29 × 21 cm",
+    status: "Available",
+    room: "face",
+    cat: "drawing",
+    sym: ["Face", "Absurdity"],
+    img: "drawing-crowd-faces.jpg",
+    cropx: 42,
+    cropy: 48,
+    zoom: 150,
+    kind: "paper",
+    poetic:
+      "A crowd of mismatched faces leans inward around one small, pale, naked figure.",
+    note: "I drew strangers from memory until the page was full, then placed a tiny frightened man in the only gap left. Everyone is looking somewhere different. No one is looking at him.",
+    price: "$520",
+    crops: [
+      { cap: "The pink witness", cx: 33, cy: 38, z: 300 },
+      { cap: "The small figure", cx: 46, cy: 80, z: 300 },
+      { cap: "Profiles", cx: 70, cy: 58, z: 300 },
+    ],
+  },
+  {
+    id: "inverted-body",
+    no: "RR·011",
+    title: "Inverted Torso",
+    year: "2024",
+    medium: "Marker on paper",
+    dims: "29 × 21 cm",
+    status: "Available",
+    room: "body",
+    cat: "drawing",
+    sym: ["Body", "Face"],
+    img: "drawing-inverted-body.jpg",
+    cropx: 43,
+    cropy: 52,
+    zoom: 160,
+    kind: "paper",
+    poetic:
+      "A torso hangs upside-down, a sleeping face surfacing where the stomach should be.",
+    note: "An exercise in anatomy that refused to behave. The body kept turning into a face, so I let it.",
+    price: "$360",
+    crops: [{ cap: "The hidden face", cx: 44, cy: 52, z: 235 }],
+  },
+  {
+    id: "shield-tree",
+    no: "RR·012",
+    title: "Genealogy",
+    year: "2024",
+    medium: "Ink & marker on paper",
+    dims: "29 × 21 cm",
+    status: "Available",
+    room: "ritual",
+    cat: "drawing",
+    sym: ["Ritual", "Body", "Absurdity"],
+    img: "drawing-shield-tree.jpg",
+    cropx: 46,
+    cropy: 48,
+    zoom: 152,
+    kind: "paper",
+    poetic:
+      "A tree grows heraldic shields instead of leaves and stands on a root-system of bared teeth.",
+    note: "A family tree for a family that only ever kept its coats of arms. The trunk is a woman. The roots bite.",
+    price: "$540",
+    crops: [
+      { cap: "The crest canopy", cx: 48, cy: 32, z: 200 },
+      { cap: "Root of teeth", cx: 46, cy: 76, z: 205 },
+    ],
+  },
+  {
+    id: "tree-bridge",
+    no: "RR·013",
+    title: "Little Bridge, Old Tree",
+    year: "2021",
+    medium: "Coloured pencil on paper",
+    dims: "24 × 18 cm",
     status: "Available",
     room: "absurd",
-    symbols: ["face", "body", "animal", "absurdity"],
-    image: "roiter-blue-bust-bird.jpg",
-    price: null,
-    featured: true,
-    face: { label: "Blue bust", x: 50, y: 28, zoom: 1.5 },
+    cat: "drawing",
+    sym: ["Desert", "Sleep"],
+    img: "study-tree-bridge.jpg",
+    cropx: 48,
+    cropy: 46,
+    zoom: 148,
+    kind: "paper",
+    poetic:
+      "A single stone bridge leads nowhere across dry grass, keeping an old tree company.",
+    note: "The quietest thing in the cabinet. I keep it to remind myself that not everything has to be a face.",
+    price: "$220",
+    crops: [{ cap: "The bridge", cx: 30, cy: 58, z: 220 }],
+  },
+  {
+    id: "beak-man",
+    no: "RR·014",
+    title: "The Appointment",
+    year: "2023",
+    medium: "Ink on paper",
+    dims: "21 × 15 cm",
+    status: "Available",
+    room: "absurd",
+    cat: "drawing",
+    sym: ["Animal", "Body", "Absurdity", "Machine"],
+    img: "sketch-beak-man.jpg",
+    cropx: 45,
+    cropy: 48,
+    zoom: 158,
+    kind: "paper",
+    poetic:
+      "A man in a good coat keeps the head of a bird, and points the way with one gloved hand.",
+    note: "Drawn fast at a cafe table. He was already wearing the suit; I only gave him the beak he deserved.",
+    price: "$300",
+    crops: [{ cap: "The beaked head", cx: 46, cy: 30, z: 235 }],
+  },
+  {
+    id: "octopus-man",
+    no: "RR·015",
+    title: "Self-Portrait as Cephalopod",
+    year: "2023",
+    medium: "Ink on paper",
+    dims: "21 × 15 cm",
+    status: "Available",
+    room: "face",
+    cat: "drawing",
+    sym: ["Face", "Animal", "Absurdity"],
+    img: "sketch-octopus-man.jpg",
+    cropx: 48,
+    cropy: 44,
+    zoom: 150,
+    kind: "paper",
+    poetic:
+      "A sorrowful bald man whose beard has become a nest of octopus arms, one trailing a stave of music.",
+    note: "How it feels to talk too much. The arms write their own song along the bottom of the page.",
+    price: "$300",
+    crops: [
+      { cap: "The eyes", cx: 48, cy: 38, z: 220 },
+      { cap: "Arms & music", cx: 40, cy: 80, z: 205 },
+    ],
+  },
+  {
+    id: "nude-vase",
+    no: "RR·016",
+    title: "Two Studies — Figure, Flowers",
+    year: "2022",
+    medium: "Ink & red on paper",
+    dims: "21 × 15 cm",
+    status: "Private Collection",
+    room: "body",
+    cat: "drawing",
+    sym: ["Body"],
+    img: "sketch-nude-vase.jpg",
+    cropx: 38,
+    cropy: 48,
+    zoom: 158,
+    kind: "paper",
+    poetic:
+      "A standing nude and a vase of red-stung flowers share one quick page.",
+    note: "Two minutes each. The line either finds the body or it does not; there is no going back over it in ink.",
+    price: "Private Collection",
+    crops: [{ cap: "The figure", cx: 34, cy: 50, z: 205 }],
+  },
+  {
+    id: "three-figures",
+    no: "RR·017",
+    title: "Three Who Wait",
+    year: "2022",
+    medium: "Ink on paper",
+    dims: "21 × 15 cm",
+    status: "Available",
+    room: "body",
+    cat: "drawing",
+    sym: ["Body", "Sleep", "Absurdity"],
+    img: "sketch-three-figures.jpg",
+    cropx: 48,
+    cropy: 54,
+    zoom: 150,
+    kind: "paper",
+    poetic:
+      "Three thin figures stand on a scratched floor, one with a face folding open like a flag.",
+    note: "They are waiting for the same thing I am. None of us will say what it is.",
+    price: "$280",
+    crops: [{ cap: "The opened face", cx: 48, cy: 38, z: 220 }],
+  },
+  {
+    id: "ph-mask",
+    no: "RR·018",
+    title: "Mask for an Unknown Festival",
+    year: "2024",
+    medium: "Carved walnut",
+    dims: "32 × 20 × 9 cm",
+    status: "Available",
+    room: "carved",
+    cat: "carving",
+    sym: ["Mask", "Wood", "Ritual"],
+    img: null,
+    kind: "wood",
+    poetic:
+      "A walnut mask for a celebration that has not been invented yet.",
+    note: "Studio photographs of this carving are being made. Write to the studio and I will send them to you directly.",
+    price: "$1,600",
+    crops: [],
+  },
+  {
+    id: "ph-figure",
+    no: "RR·019",
+    title: "Standing Figure (Olive)",
+    year: "2023",
+    medium: "Carved olive wood",
+    dims: "54 cm tall",
+    status: "Inquiry",
+    room: "carved",
+    cat: "carving",
+    sym: ["Body", "Wood"],
+    img: null,
+    kind: "wood",
+    poetic:
+      "A thin standing figure cut from a single olive limb, still smelling faintly of the tree.",
+    note: "Photographs in progress. Available to view in person at the studio.",
+    price: "Inquire",
+    crops: [],
+  },
+  {
+    id: "ph-skull",
+    no: "RR·020",
+    title: "Small Skull, Pocket-Sized",
+    year: "2024",
+    medium: "Carved boxwood",
+    dims: "8 × 6 × 7 cm",
+    status: "Available",
+    room: "carved",
+    cat: "carving",
+    sym: ["Death", "Wood"],
+    img: null,
+    kind: "wood",
+    poetic:
+      "A skull small enough to close your hand around, worn smooth at the temples.",
+    note: "A memento to carry. Photographs forthcoming.",
+    price: "$340",
+    crops: [],
   },
 ];
 
-export const artworks: Artwork[] = allArtworks.filter((a) =>
-  hasImageAsset(a.image),
-);
+export const faces: Face[] = [
+  { id: "carving-blue", label: "Blue Cry", img: "carving-blue-cry.jpg", cx: 53, cy: 42, z: 190 },
+  { id: "reliquary", label: "The Reliquary", img: "the-reliquary.jpg", cx: 50, cy: 22, z: 185 },
+  { id: "gold-mask", label: "Sleep, Unhooked", img: "painting-gold-mask.jpg", cx: 48, cy: 52, z: 185 },
+  { id: "crowd", label: "The Pink Witness", img: "drawing-crowd-faces.jpg", cx: 33, cy: 38, z: 300 },
+  { id: "blue-woman", label: "Cobalt Annunciation", img: "painting-blue-woman-serpent.jpg", cx: 47, cy: 29, z: 215 },
+  { id: "horned-janus", label: "Two-Faced Saint", img: "drawing-horned-janus.jpg", cx: 47, cy: 36, z: 205 },
+  { id: "crowd", label: "Fevered", img: "drawing-crowd-faces.jpg", cx: 58, cy: 46, z: 320 },
+  { id: "owl", label: "The Sentinel", img: "drawing-owl.jpg", cx: 50, cy: 33, z: 180 },
+  { id: "octopus-man", label: "Cephalopod", img: "sketch-octopus-man.jpg", cx: 48, cy: 38, z: 185 },
+  { id: "crowd", label: "The Insomniac", img: "drawing-crowd-faces.jpg", cx: 46, cy: 60, z: 300 },
+  { id: "lynx", label: "Thicket", img: "drawing-lynx.jpg", cx: 52, cy: 44, z: 190 },
+  { id: "crowd", label: "Violet", img: "drawing-crowd-faces.jpg", cx: 30, cy: 62, z: 320 },
+  { id: "tiger", label: "Ambush", img: "painting-tiger.jpg", cx: 46, cy: 42, z: 170 },
+  { id: "crowd", label: "Envy", img: "drawing-crowd-faces.jpg", cx: 70, cy: 52, z: 340 },
+  { id: "inverted-body", label: "Upturned", img: "drawing-inverted-body.jpg", cx: 44, cy: 52, z: 215 },
+  { id: "crowd", label: "Amber Profile", img: "drawing-crowd-faces.jpg", cx: 72, cy: 74, z: 320 },
+  { id: "three-figures", label: "The Opened Face", img: "sketch-three-figures.jpg", cx: 48, cy: 36, z: 215 },
+  { id: "crowd", label: "Cold Saint", img: "drawing-crowd-faces.jpg", cx: 16, cy: 76, z: 330 },
+];
 
-export const catalogArtworkIds = () => allArtworks.map((a) => a.id);
+export const drawers: Drawer[] = [
+  { key: "heads", label: "Heads & Masks", sub: "carved and painted", itemIds: ["carving-blue", "octopus-man", "gold-mask", "ph-mask"] },
+  { key: "ink", label: "Ink Studies", sub: "one sitting each", itemIds: ["nude-vase", "three-figures", "beak-man"] },
+  { key: "colour", label: "Colour Experiments", sub: "marker & pen", itemIds: ["owl", "lynx", "shield-tree", "horned-janus"] },
+  { key: "loose", label: "Landscapes & Loose Leaves", sub: "quiet pages", itemIds: ["tree-bridge", "inverted-body", "blue-woman"] },
+  { key: "small", label: "Small Carved Objects", sub: "made to hold", itemIds: ["ph-figure", "ph-skull"] },
+];
 
-export const artworkById = (id: string) => artworks.find((a) => a.id === id);
+export const studioNotes: Note[] = [
+  { id: "carving-blue", date: "Winter", tag: "Carving", title: "Finding the face in the log", img: "carving-blue-cry.jpg", cx: 42, cy: 30, z: 240, body: "The hollow was already there. I spent three evenings deciding whether the mouth wanted to be open or closed. Open won, and now it will not stop." },
+  { id: "visitation", date: "Spring", tag: "Painting", title: "A palm is mostly weather", img: "the-visitation.jpg", cx: 34, cy: 54, z: 200, body: "I repainted these creases for a month, until the hand stopped looking like a map and started looking like a threat." },
+  { id: "crowd", date: "Summer", tag: "Drawing", title: "A page full of strangers", img: "drawing-crowd-faces.jpg", cx: 46, cy: 50, z: 220, body: "I drew faces from memory until there was no white paper left, then gave the only gap to one small frightened man." },
+  { id: "shield-tree", date: "Autumn", tag: "Drawing", title: "Roots that bite", img: "drawing-shield-tree.jpg", cx: 46, cy: 76, z: 220, body: "The canopy is heraldry; the roots are teeth. A family remembered only by its coats of arms, standing on what it chewed through." },
+  { id: "gold-mask", date: "Late", tag: "Painting", title: "The mask needs a pole", img: "painting-gold-mask.jpg", cx: 50, cy: 68, z: 200, body: "A face has to hang on something once you take it off for the night. I left the support visible. It felt more honest than hiding it." },
+];
 
-export const artworksByRoom = (room: RoomId) =>
-  artworks.filter((a) => a.room === room);
+/* ---------------------------------------------------------------
+   Derived helpers
+   --------------------------------------------------------------- */
 
-export const artworksBySymbol = (sym: SymbolId) =>
-  artworks.filter((a) => a.symbols.includes(sym));
+export const workById = (id: string): Work | undefined =>
+  works.find((w) => w.id === id);
 
-export const availableArtworks = () =>
-  artworks.filter((a) => a.status === "Available" || a.status === "Inquiry");
+export const roomByKey = (key: RoomKey): Room | undefined =>
+  rooms.find((r) => r.key === key);
 
-export const faces = () =>
-  artworks.filter((a) => a.face) as (Artwork & { face: Crop })[];
+export const worksInRoom = (key: RoomKey): Work[] =>
+  works.filter((w) => w.room === key);
 
-export const featuredArtworks = () => artworks.filter((a) => a.featured);
+export const worksWithMotif = (motif: string): Work[] =>
+  works.filter((w) => w.sym.includes(motif));
 
-export const heroArtwork = () =>
-  artworks.find((a) => a.hero) ?? artworks[0] ?? null;
+export const relatedWorks = (work: Work, limit = 3): Work[] =>
+  works.filter((w) => w.room === work.room && w.id !== work.id).slice(0, limit);
 
-export const symbolCount = (sym: SymbolId) => artworksBySymbol(sym).length;
+export const availablePaintings = (): Work[] =>
+  works.filter((w) => w.cat === "painting");
 
-export const roomById = (id: RoomId) => {
-  const base = rooms.find((r) => r.id === id)!;
-  const first = artworksByRoom(id)[0];
-  if (!first) return base;
-  return { ...base, image: first.image };
-};
+export const availableCarvings = (): Work[] =>
+  works.filter((w) => w.cat === "carving");
 
-export const activeRooms = () =>
-  rooms.filter((r) => artworksByRoom(r.id).length > 0);
+export const availableEditions = (): Work[] =>
+  works.filter((w) => w.cat === "edition" || w.cat === "drawing");
 
-export function relatedArtworks(art: Artwork, limit = 3): Artwork[] {
-  return artworks
-    .filter((a) => a.id !== art.id && a.room === art.room)
-    .slice(0, limit);
+export const drawerItems = (drawer: Drawer): Work[] =>
+  drawer.itemIds.map((id) => workById(id)).filter((w): w is Work => Boolean(w));
+
+export function statusColor(status: Status): string {
+  switch (status) {
+    case "Available":
+      return "#bd9a57";
+    case "Inquiry":
+      return "#6f8791";
+    case "Sold":
+      return "rgba(154,70,54,.85)";
+    default:
+      return "rgba(111,135,145,.72)";
+  }
 }
 
-export const statusLabel: Record<Status, string> = {
-  Available: "Available",
-  Sold: "Sold",
-  "Private Collection": "Private Collection",
-  Inquiry: "Inquiry",
-};
-
-export function priceLabel(art: Artwork): string {
-  if (art.status === "Sold") return "Sold";
-  if (art.status === "Private Collection") return "Private Collection";
-  if (art.price == null) return "Price on request";
-  return formatPrice(art.price);
+export function phBase(kind: Kind): string {
+  switch (kind) {
+    case "wood":
+      return "radial-gradient(120% 90% at 50% 30%, rgba(120,78,44,.2), transparent 60%), linear-gradient(105deg,#30221a,#1c130d 62%,#140d09)";
+    case "paper":
+      return "radial-gradient(120% 90% at 50% 35%, rgba(233,225,211,.06), transparent 60%), linear-gradient(135deg,#272219,#18140f)";
+    case "gold":
+      return "radial-gradient(120% 90% at 50% 30%, rgba(189,154,87,.16), transparent 60%), linear-gradient(135deg,#251d12,#150f09)";
+    default:
+      return "radial-gradient(120% 90% at 50% 32%, rgba(90,58,36,.22), transparent 62%), linear-gradient(135deg,#221a13,#14100b)";
+  }
 }
 
-export function formatPrice(eur: number): string {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(eur);
+/** Background style for a positioned, zoomed crop of an artwork image. */
+export function cropBackground(file: string, cx: number, cy: number, z: number): string {
+  return `background-image:url(${artUrl(file)});background-size:${z}%;background-position:${cx}% ${cy}%;background-repeat:no-repeat;`;
 }
 
-export const hasLogoAsset = () => hasImageAsset("roiter-logo.png");
+/** Cover background for a full image at an optional focal point. */
+export function coverBackground(file: string, cx = 50, cy = 50): string {
+  return `background-image:url(${artUrl(file)});background-size:cover;background-position:${cx}% ${cy}%;`;
+}
+
+/** Background for a room tile (image crop, or a woodgrain placeholder). */
+export function roomFill(room: Room): string {
+  return room.img
+    ? `background-image:url(${artUrl(room.img)});background-size:cover;background-position:${room.cx ?? 50}% ${room.cy ?? 50}%;`
+    : `background:${phBase(room.kind ?? "wood")};`;
+}
