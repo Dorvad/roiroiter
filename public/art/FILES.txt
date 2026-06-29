@@ -3,7 +3,7 @@ Roi Roiter — artwork files in public/art/
 
 Each JPEG is referenced from src/lib/data.ts by filename.
 
-Catalogue (35 works, 33 with photography)
+Catalogue (59 works, 57 with photography)
 -----------------------------------------
 the-reliquary.jpg               RR·001  The Reliquary
 the-visitation.jpg              RR·002  The Visitation
@@ -40,6 +40,30 @@ drawing-knight-lion.jpg         RR·032  Knight with Lion Crest
 drawing-bowler-man.jpg          RR·033  The Bowler
 painting-expressive-portrait.jpg RR·034 Expressive Portrait
 painting-green-scholar.jpg      RR·035  The Green Scholar
+drawing-purple-curls.jpg        RR·036  The Purple Curls
+drawing-pierced-profile.jpg     RR·037  Pierced Profile
+drawing-chimp-surgeon.jpg       RR·038  The Surgeon Chimp
+drawing-star-hood.jpg           RR·039  The Star-Hooded Figure
+drawing-broken-heart.jpg        RR·040  Thorn and Broken Heart
+drawing-stacked-faces.jpg       RR·041  Four Who Stack
+drawing-gorilla-pipe.jpg        RR·042  The Philosopher Ape
+painting-cigarette-face.jpg     RR·043  Smoker in Ochre
+drawing-blue-grotesque.jpg      RR·044  Blue Grotesque
+drawing-lamassu-beast.jpg       RR·045  Guardian on the Rock
+drawing-lich-king.jpg           RR·046  The Crowned Lich
+painting-faceless-family.jpg    RR·047  The Faceless Visit
+drawing-mechanical-eye.jpg      RR·048  The Mechanised Eye
+drawing-cigarette-man.jpg       RR·049  The Smoker
+drawing-joker-profile.jpg       RR·050  Green-Haired Grin
+drawing-flame-witch.jpg         RR·051  The Many-Breasted Witch
+painting-red-marble.jpg         RR·052  Red Marbling
+drawing-mosquito-portrait.jpg   RR·053  Portrait with Mosquito
+painting-eye-study.jpg          RR·054  The Single Eye
+drawing-snarling-face.jpg         RR·055  The Snarling Hybrid
+painting-fluid-vortex.jpg       RR·056  Fluid Vortex
+drawing-weathered-face.jpg      RR·057  The Weathered Face
+drawing-beret-figure.jpg        RR·058  The Beret Figure
+drawing-corridor-ant.jpg        RR·059  The Corridor
 
 Awaiting photographs
 --------------------
